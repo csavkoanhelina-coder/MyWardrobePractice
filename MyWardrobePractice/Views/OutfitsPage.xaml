@@ -1,0 +1,48 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="MyWardrobe.Views.OutfitsPage"
+      d:DesignWidth="834.773">
+
+    <ScrollViewer Margin="80,0,80,0">
+        <StackPanel Margin="20" Background="#FFB6C1">
+
+            <TextBlock Text="{DynamicResource Outfits}" 
+                       FontSize="28" 
+                       FontWeight="Bold" 
+                       Margin="10" 
+                       HorizontalAlignment="Center"/>
+
+            <TextBlock Text="Тут ви можете створювати комбінації одягу" 
+                       FontSize="14" 
+                       Foreground="Gray" 
+                       HorizontalAlignment="Center"/>
+
+            <Border Background="White" Margin="10" Padding="15">
+                <StackPanel>
+                    <Button Content="➕ Створити новий образ" 
+                            Click="CreateOutfit_Click" 
+                            Width="200" 
+                            Margin="10" 
+                            Padding="10" 
+                            Background="#4CAF50" 
+                            Foreground="White" 
+                            FontWeight="Bold"/>
+
+                    <ListBox x:Name="OutfitsList" Height="300" Margin="10">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#FFF0F5" Margin="5" Padding="10">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding Description}" Foreground="Gray"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>
