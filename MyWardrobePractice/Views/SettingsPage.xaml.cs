@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using MyWardrobe.Services;
@@ -6,25 +7,22 @@ using MyWardrobe.Services;
 namespace MyWardrobe.Views
 {
     /// <summary>
-    /// Сторінка налаштувань, яка дозволяє користувачеві змінювати тему оформлення (світла/темна)
-    /// та мову інтерфейсу (українська/англійська). Налаштування зберігаються між сеансами.
+    /// Сторінка налаштувань програми.
+    /// Дозволяє користувачеві змінювати тему оформлення (світла/темна) та мову інтерфейсу (українська/англійська).
+    /// Налаштування автоматично зберігаються між сеансами роботи за допомогою SettingsService.
     /// </summary>
     public partial class SettingsPage : Page
     {
         /// <summary>
-        /// Ініціалізує компоненти сторінки та підписує обробники подій для кнопок.
+        /// Ініціалізує компоненти сторінки.
         /// </summary>
         public SettingsPage()
         {
             InitializeComponent();
-
-            LightThemeButton.Click += Light_Click;
-            DarkThemeButton.Click += Dark_Click;
-            UkrainianButton.Click += UA_Click;
-            EnglishButton.Click += EN_Click;
         }
 
         /// <summary>
+        /// Обробник натискання кнопки "Світла тема".
         /// Застосовує світлу тему та зберігає вибір.
         /// </summary>
         private void Light_Click(object sender, RoutedEventArgs e)
@@ -34,6 +32,7 @@ namespace MyWardrobe.Views
         }
 
         /// <summary>
+        /// Обробник натискання кнопки "Темна тема".
         /// Застосовує темну тему та зберігає вибір.
         /// </summary>
         private void Dark_Click(object sender, RoutedEventArgs e)
@@ -43,7 +42,8 @@ namespace MyWardrobe.Views
         }
 
         /// <summary>
-        /// Завантажує відповідний словник ресурсів теми, видаляє стару тему та додає нову.
+        /// Застосовує вказану тему оформлення.
+        /// Завантажує відповідний ResourceDictionary, видаляє стару тему та додає нову.
         /// </summary>
         private void ApplyTheme(string theme)
         {
@@ -52,20 +52,26 @@ namespace MyWardrobe.Views
                 var dict = new ResourceDictionary();
                 dict.Source = new Uri($"/Resources/{theme}Theme.xaml", UriKind.Relative);
 
-                var toRemove = new System.Collections.Generic.List<ResourceDictionary>();
+                List<ResourceDictionary> toRemove = new List<ResourceDictionary>();
                 foreach (var d in Application.Current.Resources.MergedDictionaries)
                 {
-                    if (d.Source != null && (d.Source.ToString().Contains("LightTheme") || d.Source.ToString().Contains("DarkTheme")))
+                    if (d.Source != null)
                     {
-                        toRemove.Add(d);
+                        string source = d.Source.ToString();
+                        if (source.Contains("LightTheme") || source.Contains("DarkTheme"))
+                        {
+                            toRemove.Add(d);
+                        }
                     }
                 }
+
                 foreach (var d in toRemove)
                 {
                     Application.Current.Resources.MergedDictionaries.Remove(d);
                 }
 
                 Application.Current.Resources.MergedDictionaries.Add(dict);
+
                 CustomMessageBox.ShowSuccess(theme == "Light" ? "Світла тема активована!" : "Темна тема активована!");
             }
             catch (Exception ex)
@@ -75,7 +81,8 @@ namespace MyWardrobe.Views
         }
 
         /// <summary>
-        /// Встановлює українську мову та зберігає вибір.
+        /// Обробник натискання кнопки "Українська мова".
+        /// Змінює мову інтерфейсу на українську та зберігає вибір.
         /// </summary>
         private void UA_Click(object sender, RoutedEventArgs e)
         {
@@ -84,7 +91,8 @@ namespace MyWardrobe.Views
         }
 
         /// <summary>
-        /// Встановлює англійську мову та зберігає вибір.
+        /// Обробник натискання кнопки "Англійська мова".
+        /// Змінює мову інтерфейсу на англійську та зберігає вибір.
         /// </summary>
         private void EN_Click(object sender, RoutedEventArgs e)
         {
@@ -93,7 +101,10 @@ namespace MyWardrobe.Views
         }
 
         /// <summary>
-        /// Завантажує відповідний словник ресурсів мови, видаляє старий та оновлює заголовок вікна.
+        /// Змінює мову інтерфейсу програми.
+        /// Завантажує відповідний ResourceDictionary з рядками перекладу,
+        /// видаляє старий мовний ресурс та додає новий.
+        /// Також оновлює заголовок головного вікна.
         /// </summary>
         private void ChangeLanguage(string lang)
         {
@@ -102,7 +113,7 @@ namespace MyWardrobe.Views
                 var dict = new ResourceDictionary();
                 dict.Source = new Uri($"/Resources/StringResources.{lang.ToLower()}.xaml", UriKind.Relative);
 
-                var toRemove = new System.Collections.Generic.List<ResourceDictionary>();
+                List<ResourceDictionary> toRemove = new List<ResourceDictionary>();
                 foreach (var d in Application.Current.Resources.MergedDictionaries)
                 {
                     if (d.Source != null && d.Source.ToString().Contains("StringResources"))
@@ -110,6 +121,7 @@ namespace MyWardrobe.Views
                         toRemove.Add(d);
                     }
                 }
+
                 foreach (var d in toRemove)
                 {
                     Application.Current.Resources.MergedDictionaries.Remove(d);

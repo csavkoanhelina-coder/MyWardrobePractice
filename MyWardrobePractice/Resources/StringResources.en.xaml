@@ -2,64 +2,56 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <!-- Main menu -->
-    <sys:String x:Key="Home">Home</sys:String>
-    <sys:String x:Key="Outfits">Outfits</sys:String>
-    <sys:String x:Key="Categories">Categories</sys:String>
-    <sys:String x:Key="Clothes">Clothes</sys:String>
-    <sys:String x:Key="Shoes">Shoes</sys:String>
-    <sys:String x:Key="Favorites">Favorites</sys:String>
-    <sys:String x:Key="Trash">Trash</sys:String>
-    <sys:String x:Key="Settings">Settings</sys:String>
+    <sys:String x:Key="Home">🏠 Home</sys:String>
+    <sys:String x:Key="Outfits">👔 Outfits</sys:String>
+    <sys:String x:Key="Categories">📂 Categories</sys:String>
+    <sys:String x:Key="Clothes">👕 Clothes</sys:String>
+    <sys:String x:Key="Shoes">👞 Shoes</sys:String>
+    <sys:String x:Key="Favorites">❤️ Favorites</sys:String>
+    <sys:String x:Key="Trash">🗑️ Trash</sys:String>
+    <sys:String x:Key="Settings">⚙️ Settings</sys:String>
 
-    <!-- Buttons -->
-    <sys:String x:Key="Add">Add</sys:String>
-    <sys:String x:Key="Save">Save</sys:String>
-    <sys:String x:Key="Cancel">Cancel</sys:String>
-    <sys:String x:Key="Search">Search</sys:String>
-    <sys:String x:Key="ChooseImage">Choose Image</sys:String>
-
-    <!-- Page titles -->
-    <sys:String x:Key="TitleHome">My Clothing Collection</sys:String>
-    <sys:String x:Key="TitleClothes">My Clothes</sys:String>
-    <sys:String x:Key="TitleShoes">My Shoes</sys:String>
-    <sys:String x:Key="TitleFavorites">Favorite Items</sys:String>
-    <sys:String x:Key="TitleTrash">Trash</sys:String>
-    <sys:String x:Key="TitleSettings">Settings</sys:String>
-    <sys:String x:Key="TitleCategories">Clothing Categories</sys:String>
-
-    <!-- Fields -->
-    <sys:String x:Key="Name">Name</sys:String>
-    <sys:String x:Key="Size">Size</sys:String>
-    <sys:String x:Key="Color">Color</sys:String>
-    <sys:String x:Key="Season">Season</sys:String>
-    <sys:String x:Key="Type">Type</sys:String>
-
-    <!-- Categories -->
+    <sys:String x:Key="TitleShoes">👞 My Shoes</sys:String>
+    <sys:String x:Key="TitleClothes">👕 My Clothes</sys:String>
+    <sys:String x:Key="TitleFavorites">❤️ Favorites</sys:String>
+    <sys:String x:Key="TitleTrash">🗑️ Trash</sys:String>
+    <sys:String x:Key="TitleCategories">📂 Clothing Categories</sys:String>
     <sys:String x:Key="All">All</sys:String>
-    <sys:String x:Key="Top">Top</sys:String>
-    <sys:String x:Key="Bottom">Bottom</sys:String>
-    <sys:String x:Key="Dress">Dress</sys:String>
 
-    <!-- Seasons -->
-    <sys:String x:Key="Summer">Summer</sys:String>
-    <sys:String x:Key="Winter">Winter</sys:String>
-    <sys:String x:Key="Spring">Spring</sys:String>
-    <sys:String x:Key="Autumn">Autumn</sys:String>
+    <sys:String x:Key="Top">👕 Top</sys:String>
+    <sys:String x:Key="Bottom">👇 Bottom</sys:String>
+    <sys:String x:Key="Dress">👗 Dress</sys:String>
 
-    <!-- Themes -->
-    <sys:String x:Key="ThemeTitle">Theme</sys:String>
-    <sys:String x:Key="LightTheme">Light Theme</sys:String>
-    <sys:String x:Key="DarkTheme">Dark Theme</sys:String>
+    <sys:String x:Key="TitleHome">🏠 My Clothing Collection</sys:String>
+    <sys:String x:Key="Search">🔍 Search</sys:String>
+    <sys:String x:Key="SearchResult">📋 Search Results</sys:String>
+    <sys:String x:Key="MyCollection">👗 My Collection</sys:String>
 
-    <!-- Language -->
-    <sys:String x:Key="LanguageTitle">Language</sys:String>
-    <sys:String x:Key="Ukrainian">Ukrainian</sys:String>
-    <sys:String x:Key="English">English</sys:String>
+    <sys:String x:Key="Add">➕ Add</sys:String>
 
-    <!-- Messages -->
-    <sys:String x:Key="SearchResult">Search Results</sys:String>
-    <sys:String x:Key="MyCollection">My Collection</sys:String>
-    <sys:String x:Key="Tip">Tip: Click ❤️ to add to favorites, 🗑️ to delete</sys:String>
+    <sys:String x:Key="TitleSettings">⚙️ Settings</sys:String>
+    <sys:String x:Key="ThemeTitle">🎨 Theme</sys:String>
+    <sys:String x:Key="LightTheme">☀️ Light Theme</sys:String>
+    <sys:String x:Key="DarkTheme">🌙 Dark Theme</sys:String>
+    <sys:String x:Key="LanguageTitle">🌐 Language</sys:String>
+    <sys:String x:Key="Ukrainian">🇺🇦 Ukrainian</sys:String>
+    <sys:String x:Key="English">🇬🇧 English</sys:String>
+
+    <sys:String x:Key="Tip">💡 Tip: Click ❤️ to add to favorites, 🗑️ to delete</sys:String>
+    <sys:String x:Key="OutfitsComingSoon">The outfit creation feature will be available soon!</sys:String>
+
+    <sys:String x:Key="Name">📝 Name</sys:String>
+    <sys:String x:Key="Size">📏 Size</sys:String>
+    <sys:String x:Key="Color">🎨 Color</sys:String>
+    <sys:String x:Key="Type">👗 Type</sys:String>
+    <sys:String x:Key="Season">🌤️ Season</sys:String>
+    <sys:String x:Key="ChooseImage">🖼️ Choose image</sys:String>
+    <sys:String x:Key="Save">💾 Save</sys:String>
+    <sys:String x:Key="Cancel">❌ Cancel</sys:String>
+
+    <sys:String x:Key="Spring">🌸 Spring</sys:String>
+    <sys:String x:Key="Summer">☀️ Summer</sys:String>
+    <sys:String x:Key="Autumn">🍂 Autumn</sys:String>
+    <sys:String x:Key="Winter">❄️ Winter</sys:String>
 
 </ResourceDictionary>

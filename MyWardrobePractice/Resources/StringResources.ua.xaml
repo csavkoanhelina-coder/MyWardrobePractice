@@ -2,64 +2,56 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <!-- Головне меню -->
-    <sys:String x:Key="Home">Головна</sys:String>
-    <sys:String x:Key="Outfits">Образи</sys:String>
-    <sys:String x:Key="Categories">Категорії</sys:String>
-    <sys:String x:Key="Clothes">Одяг</sys:String>
-    <sys:String x:Key="Shoes">Взуття</sys:String>
-    <sys:String x:Key="Favorites">Улюблене</sys:String>
-    <sys:String x:Key="Trash">Корзина</sys:String>
-    <sys:String x:Key="Settings">Налаштування</sys:String>
+    <sys:String x:Key="Home">🏠 Головна</sys:String>
+    <sys:String x:Key="Outfits">👔 Образи</sys:String>
+    <sys:String x:Key="Categories">📂 Категорії</sys:String>
+    <sys:String x:Key="Clothes">👕 Одяг</sys:String>
+    <sys:String x:Key="Shoes">👞 Взуття</sys:String>
+    <sys:String x:Key="Favorites">❤️ Улюблене</sys:String>
+    <sys:String x:Key="Trash">🗑️ Корзина</sys:String>
+    <sys:String x:Key="Settings">⚙️ Налаштування</sys:String>
 
-    <!-- Кнопки -->
-    <sys:String x:Key="Add">Додати</sys:String>
-    <sys:String x:Key="Save">Зберегти</sys:String>
-    <sys:String x:Key="Cancel">Скасувати</sys:String>
-    <sys:String x:Key="Search">Пошук</sys:String>
-    <sys:String x:Key="ChooseImage">Обрати фото</sys:String>
-
-    <!-- Заголовки сторінок -->
-    <sys:String x:Key="TitleHome">Моя колекція одягу</sys:String>
-    <sys:String x:Key="TitleClothes">Мій одяг</sys:String>
-    <sys:String x:Key="TitleShoes">Моє взуття</sys:String>
-    <sys:String x:Key="TitleFavorites">Улюблені речі</sys:String>
-    <sys:String x:Key="TitleTrash">Корзина</sys:String>
-    <sys:String x:Key="TitleSettings">Налаштування</sys:String>
-    <sys:String x:Key="TitleCategories">Категорії одягу</sys:String>
-
-    <!-- Поля -->
-    <sys:String x:Key="Name">Назва</sys:String>
-    <sys:String x:Key="Size">Розмір</sys:String>
-    <sys:String x:Key="Color">Колір</sys:String>
-    <sys:String x:Key="Season">Сезон</sys:String>
-    <sys:String x:Key="Type">Тип</sys:String>
-
-    <!-- Категорії -->
+    <sys:String x:Key="TitleShoes">👞 Моє взуття</sys:String>
+    <sys:String x:Key="TitleClothes">👕 Мій одяг</sys:String>
+    <sys:String x:Key="TitleFavorites">❤️ Улюблене</sys:String>
+    <sys:String x:Key="TitleTrash">🗑️ Корзина</sys:String>
+    <sys:String x:Key="TitleCategories">📂 Категорії одягу</sys:String>
     <sys:String x:Key="All">Всі</sys:String>
-    <sys:String x:Key="Top">Верх</sys:String>
-    <sys:String x:Key="Bottom">Низ</sys:String>
-    <sys:String x:Key="Dress">Плаття</sys:String>
 
-    <!-- Сезони -->
-    <sys:String x:Key="Summer">Літо</sys:String>
-    <sys:String x:Key="Winter">Зима</sys:String>
-    <sys:String x:Key="Spring">Весна</sys:String>
-    <sys:String x:Key="Autumn">Осінь</sys:String>
+    <sys:String x:Key="Top">👕 Верх</sys:String>
+    <sys:String x:Key="Bottom">👇 Низ</sys:String>
+    <sys:String x:Key="Dress">👗 Плаття</sys:String>
 
-    <!-- Теми -->
-    <sys:String x:Key="ThemeTitle">Тема оформлення</sys:String>
-    <sys:String x:Key="LightTheme">Світла тема</sys:String>
-    <sys:String x:Key="DarkTheme">Темна тема</sys:String>
+    <sys:String x:Key="TitleHome">🏠 Моя колекція одягу</sys:String>
+    <sys:String x:Key="Search">🔍 Пошук</sys:String>
+    <sys:String x:Key="SearchResult">📋 Результати пошуку</sys:String>
+    <sys:String x:Key="MyCollection">👗 Вся моя колекція</sys:String>
 
-    <!-- Мова -->
-    <sys:String x:Key="LanguageTitle">Мова інтерфейсу</sys:String>
-    <sys:String x:Key="Ukrainian">Українська</sys:String>
-    <sys:String x:Key="English">English</sys:String>
+    <sys:String x:Key="Add">➕ Додати</sys:String>
 
-    <!-- Повідомлення -->
-    <sys:String x:Key="SearchResult">Результати пошуку</sys:String>
-    <sys:String x:Key="MyCollection">Вся моя колекція</sys:String>
-    <sys:String x:Key="Tip">Порада: Натисніть ❤️ щоб додати в улюблене, 🗑️ щоб видалити</sys:String>
+    <sys:String x:Key="TitleSettings">⚙️ Налаштування</sys:String>
+    <sys:String x:Key="ThemeTitle">🎨 Тема оформлення</sys:String>
+    <sys:String x:Key="LightTheme">☀️ Світла тема</sys:String>
+    <sys:String x:Key="DarkTheme">🌙 Темна тема</sys:String>
+    <sys:String x:Key="LanguageTitle">🌐 Мова інтерфейсу</sys:String>
+    <sys:String x:Key="Ukrainian">🇺🇦 Українська</sys:String>
+    <sys:String x:Key="English">🇬🇧 English</sys:String>
+
+    <sys:String x:Key="Tip">💡 Порада: Натисніть ❤️ щоб додати в улюблене, 🗑️ щоб видалити</sys:String>
+    <sys:String x:Key="OutfitsComingSoon">Функція створення образів буде доступна найближчим часом!</sys:String>
+
+    <sys:String x:Key="Name">📝 Назва</sys:String>
+    <sys:String x:Key="Size">📏 Розмір</sys:String>
+    <sys:String x:Key="Color">🎨 Колір</sys:String>
+    <sys:String x:Key="Type">👗 Тип одягу</sys:String>
+    <sys:String x:Key="Season">🌤️ Сезон</sys:String>
+    <sys:String x:Key="ChooseImage">🖼️ Обрати фото</sys:String>
+    <sys:String x:Key="Save">💾 Зберегти</sys:String>
+    <sys:String x:Key="Cancel">❌ Скасувати</sys:String>
+
+    <sys:String x:Key="Spring">🌸 Весна</sys:String>
+    <sys:String x:Key="Summer">☀️ Літо</sys:String>
+    <sys:String x:Key="Autumn">🍂 Осінь</sys:String>
+    <sys:String x:Key="Winter">❄️ Зима</sys:String>
 
 </ResourceDictionary>

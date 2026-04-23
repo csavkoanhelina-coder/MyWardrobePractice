@@ -12,16 +12,18 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Background="#F8BBD0">
-            <Button Content="🏠 Головна" Click="Home_Click" Background="#FF69B4" Margin="5" Height="60"/>
-            <Button Content="👔 Образи" Click="Outfits_Click" Background="#FF69B4" Margin="5" Height="60"/>
-            <Button Content="📂 Категорії" Click="Categories_Click" Background="#FF69B4" Margin="5" Height="60"/>
-            <Button Content="👕 Одяг" Click="Clothes_Click" Background="#FF69B4" Margin="5" Height="60"/>
-            <Button Content="👞 Взуття" Click="Shoes_Click" Background="#FF69B4" Margin="5" Height="60"/>
-            <Button Content="❤️ Улюблене" Click="Favorites_Click" Background="#FF69B4" Margin="5" Height="60"/>
-            <Button Content="🗑️ Корзина" Click="Trash_Click" Background="#FF69B4" Margin="5" Height="60"/>
-            <Button Content="⚙️ Налаштування" Click="Settings_Click" Background="#FF69B4" Margin="5" Height="60"/>
-        </StackPanel>
+        <Grid Background="{DynamicResource BackgroundBrush}">
+            <StackPanel Background="{DynamicResource MenuBrush}">
+                <Button Content="{DynamicResource Home}" Click="Home_Click" Background="{DynamicResource ButtonBrush}" Margin="5" Height="60" Foreground="White"/>
+                <Button Content="{DynamicResource Outfits}" Click="Outfits_Click" Background="{DynamicResource ButtonBrush}" Margin="5" Height="60" Foreground="White"/>
+                <Button Content="{DynamicResource Categories}" Click="Categories_Click" Background="{DynamicResource ButtonBrush}" Margin="5" Height="60" Foreground="White"/>
+                <Button Content="{DynamicResource Clothes}" Click="Clothes_Click" Background="{DynamicResource ButtonBrush}" Margin="5" Height="60" Foreground="White"/>
+                <Button Content="{DynamicResource Shoes}" Click="Shoes_Click" Background="{DynamicResource ButtonBrush}" Margin="5" Height="60" Foreground="White"/>
+                <Button Content="{DynamicResource Favorites}" Click="Favorites_Click" Background="{DynamicResource ButtonBrush}" Margin="5" Height="60" Foreground="White"/>
+                <Button Content="{DynamicResource Trash}" Click="Trash_Click" Background="{DynamicResource ButtonBrush}" Margin="5" Height="60" Foreground="White"/>
+                <Button Content="{DynamicResource Settings}" Click="Settings_Click" Background="{DynamicResource ButtonBrush}" Margin="5" Height="60" Foreground="White"/>
+            </StackPanel>
+        </Grid>
 
         <Frame x:Name="MainFrame" Grid.Column="1"/>
 

@@ -4,7 +4,7 @@
       d:DesignWidth="1247.341">
 
     <ScrollViewer>
-        <StackPanel Margin="20" Background="#FFB6C1" Width="1177">
+        <StackPanel Margin="20" Background="{DynamicResource BackgroundBrush}" Width="1177">
 
             <TextBlock Text="{DynamicResource TitleHome}" 
                        FontSize="28" 

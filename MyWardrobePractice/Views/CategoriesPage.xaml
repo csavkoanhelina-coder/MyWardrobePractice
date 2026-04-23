@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ScrollViewer>
-        <StackPanel Margin="20" Background="#FFB6C1">
+        <StackPanel Margin="20" Background="{DynamicResource BackgroundBrush}">
 
             <TextBlock Text="{DynamicResource TitleCategories}" 
                        FontSize="28" 
