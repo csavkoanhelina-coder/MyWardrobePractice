@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace MyWardrobe.Models
 {
+    /// <summary>
+    /// Модель даних, що представляє предмет одягу або взуття.
+    /// Реалізує INotifyPropertyChanged для автоматичного оновлення інтерфейсу при зміні властивостей.
+    /// </summary>
     public class Clothing : INotifyPropertyChanged
     {
         private string _name;
@@ -17,6 +17,7 @@ namespace MyWardrobe.Models
         private bool _isFavorite;
         private bool _isDeleted;
 
+        /// <summary>Назва предмета (наприклад, "спідниця", "кросівки").</summary>
         public string Name
         {
             get => _name;
@@ -27,6 +28,7 @@ namespace MyWardrobe.Models
             }
         }
 
+        /// <summary>Тип одягу: "верх", "низ", "плаття", "взуття".</summary>
         public string Type
         {
             get => _type;
@@ -37,6 +39,7 @@ namespace MyWardrobe.Models
             }
         }
 
+        /// <summary>Сезон: "весна", "літо", "осінь", "зима".</summary>
         public string Season
         {
             get => _season;
@@ -47,6 +50,7 @@ namespace MyWardrobe.Models
             }
         }
 
+        /// <summary>Розмір (наприклад, "S", "M", "L", "38").</summary>
         public string Size
         {
             get => _size;
@@ -57,6 +61,7 @@ namespace MyWardrobe.Models
             }
         }
 
+        /// <summary>Колір предмета.</summary>
         public string Color
         {
             get => _color;
@@ -67,6 +72,7 @@ namespace MyWardrobe.Models
             }
         }
 
+        /// <summary>Відносний шлях до фотографії предмета.</summary>
         public string ImagePath
         {
             get => _imagePath;
@@ -77,6 +83,7 @@ namespace MyWardrobe.Models
             }
         }
 
+        /// <summary>Позначка "улюблене" (true – в улюблених, false – ні).</summary>
         public bool IsFavorite
         {
             get => _isFavorite;
@@ -87,6 +94,7 @@ namespace MyWardrobe.Models
             }
         }
 
+        /// <summary>Позначка "видалено" (true – в корзині, false – активний предмет).</summary>
         public bool IsDeleted
         {
             get => _isDeleted;
@@ -97,8 +105,10 @@ namespace MyWardrobe.Models
             }
         }
 
+        /// <summary>Подія, що виникає при зміні будь-якої властивості.</summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>Викликає подію PropertyChanged для вказаної властивості.</summary>
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

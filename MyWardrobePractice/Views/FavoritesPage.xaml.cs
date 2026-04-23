@@ -8,11 +8,19 @@ using Newtonsoft.Json;
 
 namespace MyWardrobe.Views
 {
+    /// <summary>
+    /// Сторінка для відображення речей, які користувач позначив як улюблені (IsFavorite = true).
+    /// Дозволяє видаляти речі зі списку улюблених (скидає статус IsFavorite).
+    /// </summary>
     public partial class FavoritesPage : Page
     {
         private ObservableCollection<Clothing> allClothes;
         private string dataPath;
 
+        /// <summary>
+        /// Ініціалізує компоненти сторінки, отримує колекцію одягу та завантажує список улюблених речей.
+        /// </summary>
+        /// <param name="clothes">Колекція всіх речей (передається з MainWindow).</param>
         public FavoritesPage(ObservableCollection<Clothing> clothes)
         {
             InitializeComponent();
@@ -21,6 +29,10 @@ namespace MyWardrobe.Views
             LoadFavorites();
         }
 
+        /// <summary>
+        /// Завантажує з файлу clothes.json речі, які мають IsFavorite = true та IsDeleted = false.
+        /// Оновлює список на сторінці.
+        /// </summary>
         private void LoadFavorites()
         {
             try
@@ -49,10 +61,13 @@ namespace MyWardrobe.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Помилка завантаження улюблених: {ex.Message}");
+                CustomMessageBox.ShowError($"Помилка: {ex.Message}");
             }
         }
 
+        /// <summary>
+        /// Зберігає поточний стан колекції allClothes у файл clothes.json.
+        /// </summary>
         private void SaveData()
         {
             try
@@ -62,10 +77,14 @@ namespace MyWardrobe.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Помилка збереження: {ex.Message}");
+                CustomMessageBox.ShowError($"Помилка: {ex.Message}");
             }
         }
 
+        /// <summary>
+        /// Обробляє натискання кнопки видалення з улюблених (❤️). 
+        /// Змінює IsFavorite на false, зберігає зміни та оновлює список.
+        /// </summary>
         private void RemoveFavorite_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
@@ -74,9 +93,12 @@ namespace MyWardrobe.Views
             if (item != null)
             {
                 item.IsFavorite = false;
+
                 SaveData();
+
                 LoadFavorites();
-                MessageBox.Show($"💔 '{item.Name}' видалено з улюбленого!");
+
+                CustomMessageBox.ShowInfo($"'{item.Name}' видалено з улюбленого!");
             }
         }
     }

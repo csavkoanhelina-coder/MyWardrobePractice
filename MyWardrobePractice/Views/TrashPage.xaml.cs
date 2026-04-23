@@ -8,11 +8,18 @@ using Newtonsoft.Json;
 
 namespace MyWardrobe.Views
 {
+    /// <summary>
+    /// Сторінка "Корзина", яка відображає всі видалені речі (IsDeleted = true).
+    /// Дозволяє відновлювати речі назад до основного списку або остаточно видаляти їх з файлу.
+    /// </summary>
     public partial class TrashPage : Page
     {
         private ObservableCollection<Clothing> allClothes;
         private string dataPath;
 
+        /// <summary>
+        /// Ініціалізує компоненти сторінки, встановлює шлях до файлу даних та завантажує список видалених речей.
+        /// </summary>
         public TrashPage()
         {
             InitializeComponent();
@@ -20,6 +27,9 @@ namespace MyWardrobe.Views
             LoadData();
         }
 
+        /// <summary>
+        /// Завантажує з файлу clothes.json усі речі, у яких IsDeleted == true, та відображає їх у списку.
+        /// </summary>
         private void LoadData()
         {
             try
@@ -40,16 +50,17 @@ namespace MyWardrobe.Views
                     }
 
                     TrashList.ItemsSource = deleted;
-
-                    MessageBox.Show($"Корзина: знайдено {deleted.Count} видалених речей");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Помилка: {ex.Message}");
+                CustomMessageBox.ShowError($"Помилка: {ex.Message}");
             }
         }
 
+        /// <summary>
+        /// Зберігає поточний стан колекції allClothes у файл clothes.json.
+        /// </summary>
         private void SaveData()
         {
             try
@@ -59,10 +70,13 @@ namespace MyWardrobe.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Помилка: {ex.Message}");
+                CustomMessageBox.ShowError($"Помилка збереження: {ex.Message}");
             }
         }
 
+        /// <summary>
+        /// Відновлює вибрану річ: змінює IsDeleted на false, зберігає зміни та оновлює список корзини.
+        /// </summary>
         private void Restore_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
@@ -73,15 +87,14 @@ namespace MyWardrobe.Views
                 item.IsDeleted = false;
                 SaveData();
                 LoadData();
-                MessageBox.Show($"✨ '{item.Name}' відновлено!");
-
-                if (Application.Current.MainWindow is MainWindow mainWindow)
-                {
-                    mainWindow.RefreshClothesPage();
-                }
+                CustomMessageBox.ShowSuccess($"'{item.Name}' відновлено!");
             }
         }
 
+        /// <summary>
+        /// Остаточно видаляє вибрану річ з колекції та з файлу (без можливості відновлення).
+        /// Перед видаленням запитує підтвердження у користувача.
+        /// </summary>
         private void PermanentDelete_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
@@ -89,14 +102,12 @@ namespace MyWardrobe.Views
 
             if (item != null)
             {
-                MessageBoxResult result = MessageBox.Show($"Видалити '{item.Name}' назавжди?", "Підтвердження", MessageBoxButton.YesNo);
-
-                if (result == MessageBoxResult.Yes)
+                if (CustomMessageBox.Show($"Видалити '{item.Name}' назавжди?", "Підтвердження") == true)
                 {
                     allClothes.Remove(item);
                     SaveData();
                     LoadData();
-                    MessageBox.Show($"💀 '{item.Name}' видалено назавжди!");
+                    CustomMessageBox.ShowInfo($"'{item.Name}' видалено назавжди!");
                 }
             }
         }

@@ -7,11 +7,21 @@ using System.Windows.Controls;
 
 namespace MyWardrobe.Views
 {
+    /// <summary>
+    /// Діалогове вікно для додавання нового одягу або взуття.
+    /// Дозволяє ввести назву, розмір, колір, вибрати тип, сезон та завантажити фотографію.
+    /// </summary>
     public partial class AddClothesWindow : Window
     {
+        /// <summary>
+        /// Отримує доданий предмет одягу після успішного збереження.
+        /// </summary>
         public Clothing NewItem { get; set; }
         private string selectedImagePath = "";
 
+        /// <summary>
+        /// Ініціалізує компоненти вікна та встановлює типові значення для комбобоксів.
+        /// </summary>
         public AddClothesWindow()
         {
             InitializeComponent();
@@ -19,6 +29,10 @@ namespace MyWardrobe.Views
             SeasonBox.SelectedIndex = 0;
         }
 
+        /// <summary>
+        /// Відкриває діалог вибору файлу для завантаження фотографії.
+        /// Після вибору оновлює попередній перегляд та зберігає шлях.
+        /// </summary>
         private void ChooseImage_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
@@ -33,6 +47,10 @@ namespace MyWardrobe.Views
             }
         }
 
+        /// <summary>
+        /// Перевіряє введені дані, копіює фото в папку проєкту,
+        /// створює об'єкт Clothing та закриває вікно з результатом DialogResult = true.
+        /// </summary>
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(NameBox.Text))
@@ -94,6 +112,11 @@ namespace MyWardrobe.Views
             Close();
         }
 
+        /// <summary>
+        /// Копіює вибране зображення в папку Assets/Images проєкту.
+        /// Якщо файл з таким ім'ям вже існує, додає числовий суфікс.
+        /// Повертає відносний шлях для збереження в JSON.
+        /// </summary>
         private string CopyImageToProject(string sourcePath)
         {
             try
@@ -119,17 +142,19 @@ namespace MyWardrobe.Views
                 }
 
                 File.Copy(sourcePath, destinationPath, true);
-                MessageBox.Show($"Фото скопійовано: {Path.GetFileName(destinationPath)}");
 
                 return $"/Assets/Images/{Path.GetFileName(destinationPath)}";
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Помилка копіювання фото: {ex.Message}");
+                CustomMessageBox.ShowError($"Помилка копіювання фото: {ex.Message}");
                 return "";
             }
         }
 
+        /// <summary>
+        /// Скасовує додавання та закриває вікно з результатом DialogResult = false.
+        /// </summary>
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;

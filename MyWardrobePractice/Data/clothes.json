@@ -10,6 +10,16 @@
     "IsDeleted": false
   },
   {
+    "Name": "спідниця",
+    "Size": "S",
+    "Type": "низ",
+    "Season": "осінь",
+    "Color": "чорний",
+    "ImagePath": "/Assets/Images/skirt_1.png",
+    "IsFavorite": false,
+    "IsDeleted": false
+  },
+  {
     "Name": "сукня",
     "Size": "M",
     "Type": "плаття",
@@ -20,12 +30,34 @@
     "IsDeleted": false
   },
   {
+    "Name": "сукня",
+    "Size": "M",
+    "Type": "плаття",
+    "Season": "літо",
+    "Color": "чорний",
+    "ImagePath": "/Assets/Images/dress2.png",
+    "IsFavorite": false,
+    "IsDeleted": false
+  },
+  {
+    "Name": "туфлі",
+    "Size": "39",
+    "Type": "взуття",
+    "Season": "літо",
+    "Color": "чорний",
+    "ImagePath": "/Assets/Images/shoes.png",
+    "IsFavorite": false,
+    "IsDeleted": false
+  },
+  {
     "Name": "босоніжки",
     "Size": "38",
     "Type": "взуття",
     "Season": "літо",
-    "Color": "чорний",
-    "ImagePath": "/Assets/Images/shoes.png"
+    "Color": "білий",
+    "ImagePath": "/Assets/Images/shoes_1.png",
+    "IsFavorite": false,
+    "IsDeleted": false
   },
   {
     "Name": "кожанка",
@@ -54,6 +86,16 @@
     "Season": "весна",
     "Color": "білий",
     "ImagePath": "/Assets/Images/sneakers.png",
+    "IsFavorite": false,
+    "IsDeleted": false
+  },
+  {
+    "Name": "кросівки",
+    "Size": "38",
+    "Type": "взуття",
+    "Season": "весна",
+    "Color": "білий",
+    "ImagePath": "/Assets/Images/shoes_2.png",
     "IsFavorite": false,
     "IsDeleted": false
   },
@@ -88,6 +130,26 @@
     "IsDeleted": false
   },
   {
+    "Name": "футболка",
+    "Size": "S",
+    "Type": "верх",
+    "Season": "літо",
+    "Color": "білий",
+    "ImagePath": "/Assets/Images/tshirt_1.png",
+    "IsFavorite": false,
+    "IsDeleted": false
+  },
+  {
+    "Name": "футболка",
+    "Size": "M",
+    "Type": "верх",
+    "Season": "літо",
+    "Color": "чорний",
+    "ImagePath": "/Assets/Images/tshirt_2.png",
+    "IsFavorite": false,
+    "IsDeleted": false
+  },
+  {
     "Name": "шорти",
     "Size": "M",
     "Type": "низ",
@@ -98,12 +160,42 @@
     "IsDeleted": false
   },
   {
+    "Name": "шорти",
+    "Size": "M",
+    "Type": "низ",
+    "Season": "літо",
+    "Color": "коричневий",
+    "ImagePath": "/Assets/Images/shorts_1.png",
+    "IsFavorite": false,
+    "IsDeleted": false
+  },
+  {
+    "Name": "джинси",
+    "Type": "низ",
+    "Season": "весна",
+    "Size": "M",
+    "Color": "синій",
+    "ImagePath": "/Assets/Images/jeans.png",
+    "IsFavorite": false,
+    "IsDeleted": false
+  },
+  {
     "Name": "джинси",
     "Type": "низ",
     "Season": "весна",
     "Size": "S",
     "Color": "синій",
-    "ImagePath": "/Assets/Images/jeans.png",
+    "ImagePath": "/Assets/Images/jeans_1.png",
+    "IsFavorite": false,
+    "IsDeleted": false
+  },
+  {
+    "Name": "джинси",
+    "Type": "низ",
+    "Season": "осінь",
+    "Size": "S",
+    "Color": "синій",
+    "ImagePath": "/Assets/Images/jeans_2.png",
     "IsFavorite": false,
     "IsDeleted": false
   }

@@ -5,8 +5,15 @@ using MyWardrobe.Services;
 
 namespace MyWardrobe.Views
 {
+    /// <summary>
+    /// Сторінка налаштувань, яка дозволяє користувачеві змінювати тему оформлення (світла/темна)
+    /// та мову інтерфейсу (українська/англійська). Налаштування зберігаються між сеансами.
+    /// </summary>
     public partial class SettingsPage : Page
     {
+        /// <summary>
+        /// Ініціалізує компоненти сторінки та підписує обробники подій для кнопок.
+        /// </summary>
         public SettingsPage()
         {
             InitializeComponent();
@@ -17,18 +24,27 @@ namespace MyWardrobe.Views
             EnglishButton.Click += EN_Click;
         }
 
+        /// <summary>
+        /// Застосовує світлу тему та зберігає вибір.
+        /// </summary>
         private void Light_Click(object sender, RoutedEventArgs e)
         {
             ApplyTheme("Light");
             SettingsService.SaveTheme("Light");
         }
 
+        /// <summary>
+        /// Застосовує темну тему та зберігає вибір.
+        /// </summary>
         private void Dark_Click(object sender, RoutedEventArgs e)
         {
             ApplyTheme("Dark");
             SettingsService.SaveTheme("Dark");
         }
 
+        /// <summary>
+        /// Завантажує відповідний словник ресурсів теми, видаляє стару тему та додає нову.
+        /// </summary>
         private void ApplyTheme(string theme)
         {
             try
@@ -50,25 +66,35 @@ namespace MyWardrobe.Views
                 }
 
                 Application.Current.Resources.MergedDictionaries.Add(dict);
+                CustomMessageBox.ShowSuccess(theme == "Light" ? "Світла тема активована!" : "Темна тема активована!");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Помилка зміни теми: {ex.Message}");
+                CustomMessageBox.ShowError($"Помилка зміни теми: {ex.Message}");
             }
         }
 
+        /// <summary>
+        /// Встановлює українську мову та зберігає вибір.
+        /// </summary>
         private void UA_Click(object sender, RoutedEventArgs e)
         {
             ChangeLanguage("UA");
             SettingsService.SaveLanguage("UA");
         }
 
+        /// <summary>
+        /// Встановлює англійську мову та зберігає вибір.
+        /// </summary>
         private void EN_Click(object sender, RoutedEventArgs e)
         {
             ChangeLanguage("EN");
             SettingsService.SaveLanguage("EN");
         }
 
+        /// <summary>
+        /// Завантажує відповідний словник ресурсів мови, видаляє старий та оновлює заголовок вікна.
+        /// </summary>
         private void ChangeLanguage(string lang)
         {
             try
@@ -96,11 +122,11 @@ namespace MyWardrobe.Views
                     Application.Current.MainWindow.Title = lang == "EN" ? "My Wardrobe" : "Мій гардероб";
                 }
 
-                MessageBox.Show(lang == "EN" ? "Language changed!" : "Мову змінено!");
+                CustomMessageBox.ShowSuccess(lang == "EN" ? "Language changed!" : "Мову змінено!");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Помилка зміни мови: {ex.Message}");
+                CustomMessageBox.ShowError($"Помилка зміни мови: {ex.Message}");
             }
         }
     }

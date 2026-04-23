@@ -8,10 +8,19 @@ using Newtonsoft.Json;
 
 namespace MyWardrobe.Views
 {
+    /// <summary>
+    /// Головна сторінка додатку, яка відображає всю колекцію одягу та дозволяє виконувати пошук за назвою.
+    /// </summary>
     public partial class HomePage : Page
     {
+        /// <summary>
+        /// Колекція всіх невидалених речей (використовується для відображення та пошуку).
+        /// </summary>
         public ObservableCollection<Clothing> clothes;
 
+        /// <summary>
+        /// Ініціалізує компоненти сторінки, завантажує дані з JSON-файлу та оновлює лічильник речей.
+        /// </summary>
         public HomePage()
         {
             InitializeComponent();
@@ -20,6 +29,10 @@ namespace MyWardrobe.Views
             UpdateCountText();
         }
 
+        /// <summary>
+        /// Завантажує з файлу clothes.json усі невидалені речі (IsDeleted == false).
+        /// У разі помилки показує повідомлення та створює порожню колекцію.
+        /// </summary>
         private void LoadData()
         {
             try
@@ -54,6 +67,9 @@ namespace MyWardrobe.Views
             }
         }
 
+        /// <summary>
+        /// Оновлює текстовий блок CountText, відображаючи загальну кількість речей у колекції.
+        /// </summary>
         private void UpdateCountText()
         {
             if (clothes != null)
@@ -62,6 +78,10 @@ namespace MyWardrobe.Views
             }
         }
 
+        /// <summary>
+        /// Виконує пошук речей за назвою (нечутливий до регістру).
+        /// Результати відображаються в ResultList. Якщо нічого не знайдено – виводить відповідне повідомлення.
+        /// </summary>
         private void Search_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(SearchBox.Text))
@@ -84,11 +104,11 @@ namespace MyWardrobe.Views
 
             if (result.Count == 0)
             {
-                MessageBox.Show($"Нічого не знайдено за запитом \"{SearchBox.Text}\"", "Результат пошуку", MessageBoxButton.OK, MessageBoxImage.Information);
+                CustomMessageBox.ShowInfo($"Нічого не знайдено за запитом \"{SearchBox.Text}\"");
             }
             else
             {
-                MessageBox.Show($"Знайдено {result.Count} речей!", "Результат пошуку", MessageBoxButton.OK, MessageBoxImage.Information);
+                CustomMessageBox.ShowSuccess($"Знайдено {result.Count} речей!");
             }
         }
     }

@@ -8,11 +8,18 @@ using System.Windows.Controls;
 
 namespace MyWardrobe.Views
 {
+    /// <summary>
+    /// Сторінка для керування одягом (верх, низ, плаття). 
+    /// Дозволяє додавати нові речі, відмічати улюблені, видаляти в корзину.
+    /// </summary>
     public partial class ClothesPage : Page
     {
         private ObservableCollection<Clothing> clothes = new ObservableCollection<Clothing>();
         private string dataPath;
 
+        /// <summary>
+        /// Ініціалізує компоненти, встановлює шлях до файлу даних та завантажує список одягу.
+        /// </summary>
         public ClothesPage()
         {
             InitializeComponent();
@@ -21,6 +28,9 @@ namespace MyWardrobe.Views
             ClothesList.ItemsSource = clothes;
         }
 
+        /// <summary>
+        /// Завантажує з файлу clothes.json лише невидалені речі, які не є взуттям.
+        /// </summary>
         public void LoadData()
         {
             try
@@ -45,10 +55,14 @@ namespace MyWardrobe.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Помилка завантаження: {ex.Message}");
+                CustomMessageBox.ShowError($"Помилка завантаження: {ex.Message}");
             }
         }
 
+        /// <summary>
+        /// Зберігає поточний стан колекції одягу у файл clothes.json.
+        /// Оновлює статуси IsFavorite та IsDeleted для існуючих записів, додає нові.
+        /// </summary>
         private void SaveData()
         {
             try
@@ -85,10 +99,13 @@ namespace MyWardrobe.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Помилка збереження: {ex.Message}");
+                CustomMessageBox.ShowError($"Помилка збереження: {ex.Message}");
             }
         }
 
+        /// <summary>
+        /// Відкриває вікно додавання нового одягу. При успішному додаванні оновлює список.
+        /// </summary>
         private void OpenAddWindow_Click(object sender, RoutedEventArgs e)
         {
             AddClothesWindow window = new AddClothesWindow();
@@ -96,15 +113,15 @@ namespace MyWardrobe.Views
             if (window.ShowDialog() == true && window.NewItem != null)
             {
                 clothes.Add(window.NewItem);
-
                 SaveData();
-
                 LoadData();
-
-                MessageBox.Show($"✅ '{window.NewItem.Name}' додано успішно!");
+                CustomMessageBox.ShowSuccess($"'{window.NewItem.Name}' додано!");
             }
         }
 
+        /// <summary>
+        /// Обробляє натискання кнопки "❤️": змінює статус IsFavorite, зберігає дані та оновлює список.
+        /// </summary>
         private void Favorite_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
@@ -113,15 +130,22 @@ namespace MyWardrobe.Views
             if (item != null)
             {
                 item.IsFavorite = !item.IsFavorite;
+
                 SaveData();
 
+                ClothesList.Items.Refresh();
+
                 if (item.IsFavorite)
-                    MessageBox.Show($"❤️ '{item.Name}' додано в улюблене!");
+                    CustomMessageBox.ShowSuccess($"'{item.Name}' додано в улюблене!");
                 else
-                    MessageBox.Show($"💔 '{item.Name}' видалено з улюбленого!");
+                    CustomMessageBox.ShowInfo($"'{item.Name}' видалено з улюбленого!");
             }
         }
 
+        /// <summary>
+        /// Обробляє натискання кнопки "🗑️": після підтвердження встановлює IsDeleted = true,
+        /// зберігає зміни та оновлює список (річ переміщується в корзину).
+        /// </summary>
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
@@ -129,14 +153,15 @@ namespace MyWardrobe.Views
 
             if (item != null)
             {
-                MessageBoxResult result = MessageBox.Show($"Видалити '{item.Name}'?", "Підтвердження", MessageBoxButton.YesNo);
-
-                if (result == MessageBoxResult.Yes)
+                if (CustomMessageBox.Show($"Видалити '{item.Name}'?", "Підтвердження") == true)
                 {
                     item.IsDeleted = true;
+
                     SaveData();
+
                     LoadData();
-                    MessageBox.Show($"🗑️ '{item.Name}' переміщено в корзину!");
+
+                    CustomMessageBox.ShowTrash($"'{item.Name}' переміщено в корзину!");
                 }
             }
         }

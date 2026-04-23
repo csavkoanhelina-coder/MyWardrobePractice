@@ -3,8 +3,14 @@ using MyWardrobe.Services;
 
 namespace MyWardrobe
 {
+    /// <summary>
+    /// Головний клас додатку, який обробляє запуск програми та застосовує збережені налаштування теми та мови.
+    /// </summary>
     public partial class App : Application
     {
+        /// <summary>
+        /// Виконується при запуску додатку. Завантажує збережену тему та мову та застосовує їх.
+        /// </summary>
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -16,6 +22,9 @@ namespace MyWardrobe
             ApplyLanguage(savedLanguage);
         }
 
+        /// <summary>
+        /// Застосовує вказану тему оформлення (світлу або темну).
+        /// </summary
         private void ApplyTheme(string theme)
         {
             try
@@ -41,6 +50,9 @@ namespace MyWardrobe
             catch { }
         }
 
+        /// <summary>
+        /// Застосовує вказану мову інтерфейсу (українську або англійську).
+        /// </summary>
         private void ApplyLanguage(string lang)
         {
             try
