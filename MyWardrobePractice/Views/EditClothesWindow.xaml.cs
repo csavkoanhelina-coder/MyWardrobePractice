@@ -1,45 +1,74 @@
 ﻿using Microsoft.Win32;
 using MyWardrobe.Models;
-using Newtonsoft.Json;
 using System;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace MyWardrobe.Views
 {
     /// <summary>
-    /// Діалогове вікно для додавання нового одягу або взуття.
-    /// Дозволяє ввести назву, розмір, колір, вибрати тип, сезон та завантажити фотографію.
+    /// Діалогове вікно для редагування існуючої речі гардеробу.
+    /// Дозволяє змінювати назву, розмір, колір, тип, сезон та фотографію.
     /// </summary>
-    public partial class AddClothesWindow : Window
+    public partial class EditClothesWindow : Window
     {
         /// <summary>
-        /// Отримує доданий предмет одягу після успішного збереження.
+        /// Отримує відредагований предмет одягу після успішного збереження.
         /// </summary>
-        public Clothing NewItem { get; set; }
+        public Clothing EditedItem { get; set; }
+
+        private Clothing _originalItem;
         private string selectedImagePath = "";
 
         /// <summary>
-        /// Ініціалізує компоненти вікна та встановлює типові значення для комбобоксів.
+        /// Ініціалізує новий екземпляр вікна редагування та заповнює поля даними вибраної речі.
         /// </summary>
-        public AddClothesWindow()
+        public EditClothesWindow(Clothing item)
         {
             InitializeComponent();
-            TypeBox.SelectedIndex = 0;
-            SeasonBox.SelectedIndex = 0;
+            _originalItem = item;
+
+            NameBox.Text = item.Name;
+            SizeBox.Text = item.Size;
+            ColorBox.Text = item.Color;
+
+            switch (item.Type)
+            {
+                case "верх": TypeBox.SelectedIndex = 0; break;
+                case "низ": TypeBox.SelectedIndex = 1; break;
+                case "плаття": TypeBox.SelectedIndex = 2; break;
+                case "взуття": TypeBox.SelectedIndex = 3; break;
+                default: TypeBox.SelectedIndex = 0; break;
+            }
+
+            switch (item.Season)
+            {
+                case "весна": SeasonBox.SelectedIndex = 0; break;
+                case "літо": SeasonBox.SelectedIndex = 1; break;
+                case "осінь": SeasonBox.SelectedIndex = 2; break;
+                case "зима": SeasonBox.SelectedIndex = 3; break;
+                default: SeasonBox.SelectedIndex = 0; break;
+            }
+
+            if (!string.IsNullOrEmpty(item.ImagePath))
+            {
+                try
+                {
+                    PreviewImage.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(item.ImagePath, UriKind.Relative));
+                    ImagePathText.Text = Path.GetFileName(item.ImagePath);
+                }
+                catch { }
+            }
         }
 
         /// <summary>
-        /// Відкриває діалог вибору файлу для завантаження фотографії.
-        /// Після вибору оновлює попередній перегляд та зберігає шлях.
+        /// Відкриває діалог вибору нового файлу фотографії та оновлює попередній перегляд.
         /// </summary>
-        private void ChooseImage_Click(object sender, RoutedEventArgs e)
+        private void ChangeImage_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Title = "Виберіть фото одягу";
+            dialog.Title = "Виберіть нове фото";
             dialog.Filter = "Зображення (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp";
 
             if (dialog.ShowDialog() == true)
@@ -51,29 +80,23 @@ namespace MyWardrobe.Views
         }
 
         /// <summary>
-        /// Перевіряє введені дані, копіює фото в папку проєкту,
-        /// створює об'єкт Clothing та закриває вікно з результатом DialogResult = true.
+        /// Перевіряє введені дані, копіює нове фото (якщо вибрано), створює оновлений об'єкт Clothing.
         /// </summary>
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(NameBox.Text))
             {
-                MessageBox.Show("Введіть назву!", "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.ShowWarning("Введіть назву!");
                 return;
             }
             if (string.IsNullOrWhiteSpace(SizeBox.Text))
             {
-                MessageBox.Show("Введіть розмір!", "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.ShowWarning("Введіть розмір!");
                 return;
             }
             if (string.IsNullOrWhiteSpace(ColorBox.Text))
             {
-                MessageBox.Show("Введіть колір!", "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            if (string.IsNullOrWhiteSpace(selectedImagePath))
-            {
-                MessageBox.Show("Виберіть фото!", "Помилка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CustomMessageBox.ShowWarning("Введіть колір!");
                 return;
             }
 
@@ -97,43 +120,31 @@ namespace MyWardrobe.Views
                 else if (s.Contains("Зима")) season = "зима";
             }
 
-            string imagePath = CopyImageToProject(selectedImagePath);
-
-            int newId = 1;
-            string dataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "clothes.json");
-
-            if (File.Exists(dataPath))
+            string imagePath = _originalItem.ImagePath;
+            if (!string.IsNullOrEmpty(selectedImagePath))
             {
-                string json = File.ReadAllText(dataPath);
-                var existingItems = JsonConvert.DeserializeObject<ObservableCollection<Clothing>>(json);
-                if (existingItems != null && existingItems.Count > 0)
-                {
-                    int maxId = existingItems.Max(i => i.Id);
-                    newId = maxId + 1;
-                }
+                imagePath = CopyImageToProject(selectedImagePath);
             }
 
-            NewItem = new Clothing
+            EditedItem = new Clothing
             {
-                Id = newId,
+                Id = _originalItem.Id,
                 Name = NameBox.Text.Trim(),
                 Size = SizeBox.Text.Trim(),
                 Color = ColorBox.Text.Trim(),
                 Type = type,
                 Season = season,
                 ImagePath = imagePath,
-                IsFavorite = false,
-                IsDeleted = false
+                IsFavorite = _originalItem.IsFavorite,
+                IsDeleted = _originalItem.IsDeleted
             };
-
-            System.Diagnostics.Debug.WriteLine($"Фото збережено: {NewItem.ImagePath}");
 
             DialogResult = true;
             Close();
         }
 
         /// <summary>
-        /// Копіює вибране зображення в папку Assets/Images проєкту.
+        /// Копіює вибране зображення в папку Assets/Images проекту.
         /// Якщо файл з таким ім'ям вже існує, додає числовий суфікс.
         /// Повертає відносний шлях для збереження в JSON.
         /// </summary>
@@ -141,9 +152,7 @@ namespace MyWardrobe.Views
         {
             try
             {
-                string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                string imagesFolder = Path.Combine(baseDirectory, "Assets", "Images");
-
+                string imagesFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Images");
                 if (!Directory.Exists(imagesFolder))
                 {
                     Directory.CreateDirectory(imagesFolder);
@@ -164,8 +173,7 @@ namespace MyWardrobe.Views
                 }
 
                 File.Copy(sourcePath, destinationPath, true);
-
-                return destinationPath;
+                return $"/Assets/Images/{Path.GetFileName(destinationPath)}";
             }
             catch (Exception ex)
             {
@@ -175,7 +183,7 @@ namespace MyWardrobe.Views
         }
 
         /// <summary>
-        /// Скасовує додавання та закриває вікно з результатом DialogResult = false.
+        /// Скасовує редагування та закриває вікно без збереження змін.
         /// </summary>
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {

@@ -16,6 +16,7 @@ namespace MyWardrobe.Models
         private string _imagePath;
         private bool _isFavorite;
         private bool _isDeleted;
+        private int _id;
 
         /// <summary>Назва предмета (наприклад, "спідниця", "кросівки").</summary>
         public string Name
@@ -102,6 +103,17 @@ namespace MyWardrobe.Models
             {
                 _isDeleted = value;
                 OnPropertyChanged(nameof(IsDeleted));
+            }
+        }
+
+        /// <summary>Унікальний ідентифікатор речі (для образів).</summary>
+        public int Id
+        {
+            get => _id;
+            set
+            {
+                _id = value;
+                OnPropertyChanged(nameof(Id));
             }
         }
 

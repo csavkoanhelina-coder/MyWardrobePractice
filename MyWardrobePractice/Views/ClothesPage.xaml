@@ -20,6 +20,30 @@
                     Foreground="White" 
                     FontWeight="Bold"/>
 
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <TextBlock Text="🔍 Фільтр:" VerticalAlignment="Center" Margin="5" FontWeight="Bold" Foreground="#FF1493"/>
+
+                <ComboBox x:Name="ColorFilter" Width="120" Margin="5" SelectionChanged="Filter_Changed">
+                    <ComboBoxItem Content="🎨 Всі кольори"/>
+                    <ComboBoxItem Content="Чорний"/>
+                    <ComboBoxItem Content="Білий"/>
+                    <ComboBoxItem Content="Синій"/>
+                    <ComboBoxItem Content="Рожевий"/>
+                    <ComboBoxItem Content="Жовтий"/>
+                    <ComboBoxItem Content="Бежевий"/>
+                    <ComboBoxItem Content="Коричневий"/>
+                    <ComboBoxItem Content="Темно-зелений"/>
+                </ComboBox>
+
+                <ComboBox x:Name="SeasonFilter" Width="120" Margin="5" SelectionChanged="Filter_Changed">
+                    <ComboBoxItem Content="🌤️ Всі сезони"/>
+                    <ComboBoxItem Content="🌸 Весна"/>
+                    <ComboBoxItem Content="☀️ Літо"/>
+                    <ComboBoxItem Content="🍂 Осінь"/>
+                    <ComboBoxItem Content="❄️ Зима"/>
+                </ComboBox>
+            </StackPanel>
+
             <Border Background="White" 
                     Margin="10" 
                     Padding="15">
@@ -73,10 +97,19 @@
                                                    Foreground="Gray" 
                                                    Margin="0,5,0,0"/>
                                     </StackPanel>
-                                    
+
                                     <StackPanel Grid.Column="2" 
                                                 Orientation="Horizontal" 
                                                 VerticalAlignment="Center">
+                                        <Button Content="✏️" 
+                                                Click="Edit_Click" 
+                                                Width="45" 
+                                                Height="45" 
+                                                Margin="5" 
+                                                Background="#FFA500" 
+                                                Foreground="White" 
+                                                FontSize="16" 
+                                                ToolTip="Редагувати"/>
                                         <Button Content="❤️" 
                                                 Click="Favorite_Click" 
                                                 Width="45" 
@@ -84,7 +117,8 @@
                                                 Margin="5" 
                                                 Background="#FF69B4" 
                                                 Foreground="White" 
-                                                FontSize="16" />
+                                                FontSize="16" 
+                                                ToolTip="Улюблене"/>
                                         <Button Content="🗑️" 
                                                 Click="Delete_Click" 
                                                 Width="45" 
@@ -92,8 +126,10 @@
                                                 Margin="5" 
                                                 Background="#DC143C" 
                                                 Foreground="White" 
-                                                FontSize="16" />
+                                                FontSize="16" 
+                                                ToolTip="Видалити"/>
                                     </StackPanel>
+
                                 </Grid>
                             </Border>
                         </DataTemplate>

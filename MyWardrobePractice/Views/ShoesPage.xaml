@@ -35,8 +35,30 @@
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Button Content="❤️" Click="Favorite_Click" Width="40" Height="40" Margin="5" Background="#FF69B4" Foreground="White" FontSize="16"/>
-                                        <Button Content="🗑️" Click="Delete_Click" Width="40" Height="40" Margin="5" Background="#DC143C" Foreground="White" FontSize="16"/>
+                                        <Button Content="✏️" 
+                                                Click="Edit_Click" 
+                                                Width="45" 
+                                                Height="45" 
+                                                Margin="5" 
+                                                Background="#FFA500" 
+                                                Foreground="White" 
+                                                FontSize="16" 
+                                                ToolTip="Редагувати"/>
+                                        <Button Content="❤️" 
+                                                Click="Favorite_Click" 
+                                                Width="40" Height="40" 
+                                                Margin="5" 
+                                                Background="#FF69B4" 
+                                                Foreground="White" 
+                                                FontSize="16"/>
+                                        <Button Content="🗑️" 
+                                                Click="Delete_Click" 
+                                                Width="40" 
+                                                Height="40" 
+                                                Margin="5" 
+                                                Background="#DC143C" 
+                                                Foreground="White" 
+                                                FontSize="16"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>

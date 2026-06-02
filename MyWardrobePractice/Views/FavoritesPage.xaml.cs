@@ -1,51 +1,41 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.IO;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using MyWardrobe.Models;
-using Newtonsoft.Json;
+using MyWardrobe.Services;
 
 namespace MyWardrobe.Views
 {
     /// <summary>
-    /// Сторінка для відображення речей, які користувач позначив як улюблені (IsFavorite = true).
-    /// Дозволяє видаляти речі зі списку улюблених (скидає статус IsFavorite).
+    /// Сторінка "Улюблене", яка відображає всі речі, позначені користувачем як улюблені.
+    /// Дозволяє видаляти речі зі списку улюблених.
     /// </summary>
     public partial class FavoritesPage : Page
     {
-        private ObservableCollection<Clothing> allClothes;
-        private string dataPath;
+        private DataService _dataService;
 
         /// <summary>
-        /// Ініціалізує компоненти сторінки, отримує колекцію одягу та завантажує список улюблених речей.
+        /// Ініціалізує новий екземпляр сторінки улюблених речей.
         /// </summary>
-        /// <param name="clothes">Колекція всіх речей (передається з MainWindow).</param>
-        public FavoritesPage(ObservableCollection<Clothing> clothes)
+        public FavoritesPage(DataService dataService)
         {
             InitializeComponent();
-            allClothes = clothes;
-            dataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "clothes.json");
+            _dataService = dataService;
             LoadFavorites();
         }
 
         /// <summary>
-        /// Завантажує з файлу clothes.json речі, які мають IsFavorite = true та IsDeleted = false.
+        /// Завантажує з файлу даних усі речі, які мають позначку IsFavorite = true та не видалені.
         /// Оновлює список на сторінці.
         /// </summary>
         private void LoadFavorites()
         {
-            try
+            if (_dataService != null)
             {
-                if (File.Exists(dataPath))
-                {
-                    string json = File.ReadAllText(dataPath);
-                    allClothes = JsonConvert.DeserializeObject<ObservableCollection<Clothing>>(json);
-                }
-
+                var allItems = _dataService.LoadClothes();
                 ObservableCollection<Clothing> favorites = new ObservableCollection<Clothing>();
 
-                foreach (var item in allClothes)
+                foreach (var item in allItems)
                 {
                     if (item.IsFavorite == true && item.IsDeleted == false)
                     {
@@ -54,36 +44,24 @@ namespace MyWardrobe.Views
                 }
 
                 FavoritesList.ItemsSource = favorites;
-
-                if (favorites.Count == 0)
-                {
-                }
-            }
-            catch (Exception ex)
-            {
-                CustomMessageBox.ShowError($"Помилка: {ex.Message}");
             }
         }
 
         /// <summary>
-        /// Зберігає поточний стан колекції allClothes у файл clothes.json.
+        /// Зберігає поточний стан усіх речей у файл даних.
         /// </summary>
         private void SaveData()
         {
-            try
+            if (_dataService != null)
             {
-                string json = JsonConvert.SerializeObject(allClothes, Formatting.Indented);
-                File.WriteAllText(dataPath, json);
-            }
-            catch (Exception ex)
-            {
-                CustomMessageBox.ShowError($"Помилка: {ex.Message}");
+                var allItems = _dataService.LoadClothes();
+                _dataService.SaveClothes(allItems);
             }
         }
 
         /// <summary>
-        /// Обробляє натискання кнопки видалення з улюблених (❤️). 
-        /// Змінює IsFavorite на false, зберігає зміни та оновлює список.
+        /// Видаляє вибрану річ зі списку улюблених (змінює IsFavorite на false).
+        /// Після видалення оновлює відображення сторінки.
         /// </summary>
         private void RemoveFavorite_Click(object sender, RoutedEventArgs e)
         {
@@ -94,10 +72,18 @@ namespace MyWardrobe.Views
             {
                 item.IsFavorite = false;
 
-                SaveData();
+                var allItems = _dataService.LoadClothes();
+                foreach (var existing in allItems)
+                {
+                    if (existing.Id == item.Id)
+                    {
+                        existing.IsFavorite = false;
+                        break;
+                    }
+                }
+                _dataService.SaveClothes(allItems);
 
                 LoadFavorites();
-
                 CustomMessageBox.ShowInfo($"'{item.Name}' видалено з улюбленого!");
             }
         }

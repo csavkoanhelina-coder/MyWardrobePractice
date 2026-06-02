@@ -1,80 +1,64 @@
 ﻿using MyWardrobe.Models;
-using Newtonsoft.Json;
+using MyWardrobe.Services;
 using System;
 using System.Collections.ObjectModel;
-using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace MyWardrobe.Views
 {
     /// <summary>
-    /// Сторінка для керування одягом (верх, низ, плаття). 
-    /// Дозволяє додавати нові речі, відмічати улюблені, видаляти в корзину.
+    /// Сторінка "Одяг", яка відображає верхній одяг та плаття.
+    /// Дозволяє додавати, редагувати, видаляти речі, відмічати улюблені та виконувати фільтрацію.
     /// </summary>
     public partial class ClothesPage : Page
     {
         private ObservableCollection<Clothing> clothes = new ObservableCollection<Clothing>();
-        private string dataPath;
+        private DataService _dataService;
 
         /// <summary>
-        /// Ініціалізує компоненти, встановлює шлях до файлу даних та завантажує список одягу.
+        /// Ініціалізує новий екземпляр сторінки одягу.
         /// </summary>
-        public ClothesPage()
+        public ClothesPage(DataService dataService)
         {
             InitializeComponent();
-            dataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "clothes.json");
+            _dataService = dataService;
             LoadData();
             ClothesList.ItemsSource = clothes;
         }
 
         /// <summary>
-        /// Завантажує з файлу clothes.json лише невидалені речі, які не є взуттям.
+        /// Завантажує всі невидалені речі, які не є взуттям, з файлу даних.
+        /// Після завантаження застосовує поточні фільтри.
         /// </summary>
         public void LoadData()
         {
-            try
+            if (_dataService != null)
             {
-                if (File.Exists(dataPath))
+                var allItems = _dataService.LoadClothes();
+                clothes.Clear();
+                foreach (var item in allItems)
                 {
-                    string json = File.ReadAllText(dataPath);
-                    var allItems = JsonConvert.DeserializeObject<ObservableCollection<Clothing>>(json);
-
-                    clothes.Clear();
-
-                    foreach (var item in allItems)
+                    if (item.IsDeleted == false && item.Type != "взуття")
                     {
-                        if (item.IsDeleted == false && item.Type != "взуття")
-                        {
-                            clothes.Add(item);
-                        }
+                        clothes.Add(item);
                     }
-
-                    ClothesList.Items.Refresh();
                 }
-            }
-            catch (Exception ex)
-            {
-                CustomMessageBox.ShowError($"Помилка завантаження: {ex.Message}");
+                ClothesList.Items.Refresh();
+
+                ApplyFilters();
             }
         }
 
         /// <summary>
-        /// Зберігає поточний стан колекції одягу у файл clothes.json.
-        /// Оновлює статуси IsFavorite та IsDeleted для існуючих записів, додає нові.
+        /// Зберігає поточний стан речей у файл даних, оновлюючи статуси IsFavorite та IsDeleted.
         /// </summary>
         private void SaveData()
         {
-            try
+            if (_dataService != null)
             {
-                ObservableCollection<Clothing> allItems = new ObservableCollection<Clothing>();
-
-                if (File.Exists(dataPath))
-                {
-                    string json = File.ReadAllText(dataPath);
-                    allItems = JsonConvert.DeserializeObject<ObservableCollection<Clothing>>(json);
-                }
-
+                var allItems = _dataService.LoadClothes();
                 foreach (var currentItem in clothes)
                 {
                     bool found = false;
@@ -93,48 +77,117 @@ namespace MyWardrobe.Views
                         allItems.Add(currentItem);
                     }
                 }
-
-                string newJson = JsonConvert.SerializeObject(allItems, Formatting.Indented);
-                File.WriteAllText(dataPath, newJson);
-            }
-            catch (Exception ex)
-            {
-                CustomMessageBox.ShowError($"Помилка збереження: {ex.Message}");
+                _dataService.SaveClothes(allItems);
             }
         }
 
         /// <summary>
-        /// Відкриває вікно додавання нового одягу. При успішному додаванні оновлює список.
+        /// Відкриває вікно додавання нової речі та зберігає її при успішному завершенні.
         /// </summary>
         private void OpenAddWindow_Click(object sender, RoutedEventArgs e)
         {
             AddClothesWindow window = new AddClothesWindow();
-
             if (window.ShowDialog() == true && window.NewItem != null)
             {
-                clothes.Add(window.NewItem);
-                SaveData();
+                var allItems = _dataService.LoadClothes();
+                allItems.Add(window.NewItem);
+                _dataService.SaveClothes(allItems);
+
                 LoadData();
                 CustomMessageBox.ShowSuccess($"'{window.NewItem.Name}' додано!");
             }
         }
 
         /// <summary>
-        /// Обробляє натискання кнопки "❤️": змінює статус IsFavorite, зберігає дані та оновлює список.
+        /// Обробляє зміну значення у фільтрах (колір або сезон) та оновлює список речей.
         /// </summary>
-        private void Favorite_Click(object sender, RoutedEventArgs e)
+        private void Filter_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        /// <summary>
+        /// Застосовує вибрані фільтри (за кольором та сезоном) до списку речей.
+        /// Відображає лише ті речі, які відповідають усім вибраним критеріям.
+        /// </summary>
+        private void ApplyFilters()
+        {
+            if (_dataService == null) return;
+
+            var allItems = _dataService.LoadClothes();
+
+            var filtered = allItems.Where(c => !c.IsDeleted && c.Type != "взуття").ToList();
+
+            string selectedColor = (ColorFilter.SelectedItem as ComboBoxItem)?.Content.ToString();
+            if (selectedColor != "🎨 Всі кольори" && selectedColor != "Всі кольори" && selectedColor != null)
+            {
+                filtered = filtered.Where(c => c.Color.ToLower() == selectedColor.ToLower()).ToList();
+            }
+
+            string selectedSeason = (SeasonFilter.SelectedItem as ComboBoxItem)?.Content.ToString();
+            if (selectedSeason != "🌤️ Всі сезони" && selectedSeason != "Всі сезони" && selectedSeason != null)
+            {
+                string season = selectedSeason switch
+                {
+                    "🌸 Весна" => "весна",
+                    "☀️ Літо" => "літо",
+                    "🍂 Осінь" => "осінь",
+                    "❄️ Зима" => "зима",
+                    _ => ""
+                };
+                filtered = filtered.Where(c => c.Season == season).ToList();
+            }
+
+            clothes.Clear();
+            foreach (var item in filtered)
+            {
+                clothes.Add(item);
+            }
+            ClothesList.Items.Refresh();
+        }
+
+        /// <summary>
+        /// Відкриває вікно редагування вибраної речі та зберігає зміни.
+        /// </summary>
+        private void Edit_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
             Clothing item = button?.DataContext as Clothing;
 
             if (item != null)
             {
+                EditClothesWindow window = new EditClothesWindow(item);
+                if (window.ShowDialog() == true && window.EditedItem != null)
+                {
+                    var allItems = _dataService.LoadClothes();
+                    for (int i = 0; i < allItems.Count; i++)
+                    {
+                        if (allItems[i].Id == item.Id)
+                        {
+                            allItems[i] = window.EditedItem;
+                            break;
+                        }
+                    }
+                    _dataService.SaveClothes(allItems);
+
+                    LoadData();
+                    CustomMessageBox.ShowSuccess($"'{window.EditedItem.Name}' відредаговано!");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Змінює статус "улюблене" для вибраної речі та зберігає зміни.
+        /// </summary>
+        private void Favorite_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            Clothing item = button?.DataContext as Clothing;
+            if (item != null)
+            {
                 item.IsFavorite = !item.IsFavorite;
-
                 SaveData();
-
                 ClothesList.Items.Refresh();
-
                 if (item.IsFavorite)
                     CustomMessageBox.ShowSuccess($"'{item.Name}' додано в улюблене!");
                 else
@@ -143,24 +196,19 @@ namespace MyWardrobe.Views
         }
 
         /// <summary>
-        /// Обробляє натискання кнопки "🗑️": після підтвердження встановлює IsDeleted = true,
-        /// зберігає зміни та оновлює список (річ переміщується в корзину).
+        /// Позначає вибрану річ як видалену (переміщує до корзини) після підтвердження користувача.
         /// </summary>
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
             Clothing item = button?.DataContext as Clothing;
-
             if (item != null)
             {
                 if (CustomMessageBox.Show($"Видалити '{item.Name}'?", "Підтвердження") == true)
                 {
                     item.IsDeleted = true;
-
                     SaveData();
-
                     LoadData();
-
                     CustomMessageBox.ShowTrash($"'{item.Name}' переміщено в корзину!");
                 }
             }

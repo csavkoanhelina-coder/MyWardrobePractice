@@ -9,6 +9,7 @@
     <sys:String x:Key="Shoes">👞 Взуття</sys:String>
     <sys:String x:Key="Favorites">❤️ Улюблене</sys:String>
     <sys:String x:Key="Trash">🗑️ Корзина</sys:String>
+    <sys:String x:Key="Statistics">📊 Статистика</sys:String>
     <sys:String x:Key="Settings">⚙️ Налаштування</sys:String>
 
     <sys:String x:Key="TitleShoes">👞 Моє взуття</sys:String>
@@ -53,5 +54,32 @@
     <sys:String x:Key="Summer">☀️ Літо</sys:String>
     <sys:String x:Key="Autumn">🍂 Осінь</sys:String>
     <sys:String x:Key="Winter">❄️ Зима</sys:String>
+    <sys:String x:Key="Created">Створено:</sys:String>
+    <sys:String x:Key="NumberOfItems">Кількість речей:</sys:String>
+    <sys:String x:Key="TotalItems">Всього речей:</sys:String>
+    <sys:String x:Key="ByCategory">За категоріями:</sys:String>
+    <sys:String x:Key="BySeason">За сезонами:</sys:String>
+    <sys:String x:Key="FavoriteItems">Улюблених речей:</sys:String>
+
+    <sys:String x:Key="MyOutfits">👔 Мої образи</sys:String>
+    <sys:String x:Key="CreateNewOutfit">➕ Створити новий образ</sys:String>
+    <sys:String x:Key="OutfitTip">💡 Порада: Додайте в образ верх, низ та взуття для повного комплекту!</sys:String>
+    <sys:String x:Key="StatisticsTitle">📊 Статистика гардеробу</sys:String>
+    <sys:String x:Key="FavoritesTitle">❤️ Улюблене:</sys:String>
+    <sys:String x:Key="View">Переглянути</sys:String>
+    <sys:String x:Key="Delete">Видалити</sys:String>
+
+    <sys:String x:Key="CreateOutfitTitle">Створення образу</sys:String>
+    <sys:String x:Key="NewOutfit">Новий образ</sys:String>
+    <sys:String x:Key="OutfitName">Назва образу:</sys:String>
+    <sys:String x:Key="OutfitDescription">Опис:</sys:String>
+    <sys:String x:Key="SelectedItems">Вибрані речі:</sys:String>
+    <sys:String x:Key="SelectItems">Виберіть речі:</sys:String>
+    <sys:String x:Key="Filter">Фільтр:</sys:String>
+    <sys:String x:Key="Create">Створити образ</sys:String>
+
+    <sys:String x:Key="ViewOutfitTitle">👔 Перегляд образу</sys:String>
+    <sys:String x:Key="ItemsInOutfit">📦 Речі в образі:</sys:String>
+    <sys:String x:Key="Close">✖️ Закрити</sys:String>
 
 </ResourceDictionary>

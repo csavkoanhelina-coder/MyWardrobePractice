@@ -1,16 +1,16 @@
 ﻿using System.Windows;
 using MyWardrobe.Services;
+using MyWardrobe.Views;
 
 namespace MyWardrobe
 {
     /// <summary>
-    /// Головний клас додатку, який обробляє запуск програми та застосовує збережені налаштування теми та мови.
+    /// Головний клас додатку.
+    /// Завантажує збережені налаштування теми та мови,
+    /// запускає вікно входу замість головного вікна.
     /// </summary>
     public partial class App : Application
     {
-        /// <summary>
-        /// Виконується при запуску додатку. Завантажує збережену тему та мову та застосовує їх.
-        /// </summary>
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -20,17 +20,20 @@ namespace MyWardrobe
 
             string savedLanguage = SettingsService.LoadLanguage();
             ApplyLanguage(savedLanguage);
+
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.Show();
         }
 
         /// <summary>
         /// Застосовує вказану тему оформлення (світлу або темну).
-        /// </summary
+        /// </summary>
         private void ApplyTheme(string theme)
         {
             try
             {
                 var dict = new ResourceDictionary();
-                dict.Source = new Uri($"/Resources/{theme}Theme.xaml", UriKind.Relative);
+                dict.Source = new System.Uri($"/Resources/{theme}Theme.xaml", System.UriKind.Relative);
 
                 var toRemove = new System.Collections.Generic.List<ResourceDictionary>();
                 foreach (var d in Resources.MergedDictionaries)
@@ -47,7 +50,9 @@ namespace MyWardrobe
 
                 Resources.MergedDictionaries.Add(dict);
             }
-            catch { }
+            catch
+            {
+            }
         }
 
         /// <summary>
@@ -58,7 +63,7 @@ namespace MyWardrobe
             try
             {
                 var dict = new ResourceDictionary();
-                dict.Source = new Uri($"/Resources/StringResources.{lang.ToLower()}.xaml", UriKind.Relative);
+                dict.Source = new System.Uri($"/Resources/StringResources.{lang.ToLower()}.xaml", System.UriKind.Relative);
 
                 var toRemove = new System.Collections.Generic.List<ResourceDictionary>();
                 foreach (var d in Resources.MergedDictionaries)
@@ -75,7 +80,9 @@ namespace MyWardrobe
 
                 Resources.MergedDictionaries.Add(dict);
             }
-            catch { }
+            catch
+            {
+            }
         }
     }
 }

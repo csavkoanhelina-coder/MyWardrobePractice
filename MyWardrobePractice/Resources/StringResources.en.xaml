@@ -9,6 +9,7 @@
     <sys:String x:Key="Shoes">👞 Shoes</sys:String>
     <sys:String x:Key="Favorites">❤️ Favorites</sys:String>
     <sys:String x:Key="Trash">🗑️ Trash</sys:String>
+    <sys:String x:Key="Statistics">📊 Statistics</sys:String>
     <sys:String x:Key="Settings">⚙️ Settings</sys:String>
 
     <sys:String x:Key="TitleShoes">👞 My Shoes</sys:String>
@@ -53,5 +54,32 @@
     <sys:String x:Key="Summer">☀️ Summer</sys:String>
     <sys:String x:Key="Autumn">🍂 Autumn</sys:String>
     <sys:String x:Key="Winter">❄️ Winter</sys:String>
+    <sys:String x:Key="Created">Created:</sys:String>
+    <sys:String x:Key="NumberOfItems">Number of items:</sys:String>
+    <sys:String x:Key="TotalItems">Total items:</sys:String>
+    <sys:String x:Key="ByCategory">By category:</sys:String>
+    <sys:String x:Key="BySeason">By season:</sys:String>
+    <sys:String x:Key="FavoriteItems">Favorite items:</sys:String>
+
+    <sys:String x:Key="MyOutfits">👔 My Outfits</sys:String>
+    <sys:String x:Key="CreateNewOutfit">➕ Create new outfit</sys:String>
+    <sys:String x:Key="OutfitTip">💡 Tip: Add top, bottom and shoes for a complete look!</sys:String>
+    <sys:String x:Key="StatisticsTitle">📊 Wardrobe Statistics</sys:String>
+    <sys:String x:Key="FavoritesTitle">❤️ Favorites:</sys:String>
+    <sys:String x:Key="View">View</sys:String>
+    <sys:String x:Key="Delete">Delete</sys:String>
+
+    <sys:String x:Key="CreateOutfitTitle">Create Outfit</sys:String>
+    <sys:String x:Key="NewOutfit">New Outfit</sys:String>
+    <sys:String x:Key="OutfitName">Outfit name:</sys:String>
+    <sys:String x:Key="OutfitDescription">Description:</sys:String>
+    <sys:String x:Key="SelectedItems">Selected items:</sys:String>
+    <sys:String x:Key="SelectItems">Select items:</sys:String>
+    <sys:String x:Key="Filter">Filter:</sys:String>
+    <sys:String x:Key="Create">Create Outfit</sys:String>
+
+    <sys:String x:Key="ViewOutfitTitle">👔 View Outfit</sys:String>
+    <sys:String x:Key="ItemsInOutfit">📦 Items in outfit:</sys:String>
+    <sys:String x:Key="Close">✖️ Close</sys:String>
 
 </ResourceDictionary>

@@ -1,57 +1,105 @@
 ﻿<Page x:Class="MyWardrobe.Views.OutfitsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Width="1059">
 
-    <ScrollViewer>
-        <StackPanel Margin="20" Background="{DynamicResource BackgroundBrush}">
+    <ScrollViewer Width="1065" Height="700" HorizontalAlignment="Left">
+        <StackPanel Margin="20" Background="{DynamicResource BackgroundBrush}" Width="1000" Height="700">
 
-            <TextBlock Text="{DynamicResource Outfits}" 
+            <TextBlock Text="{DynamicResource MyOutfits}" 
                        FontSize="28" 
                        FontWeight="Bold" 
                        Foreground="#FF1493" 
                        HorizontalAlignment="Center" 
                        Margin="10,0,10,20"/>
 
-            <Border Background="White" 
-                    CornerRadius="15" 
-                    Margin="10" 
-                    Padding="30"
-                    BorderBrush="#FF69B4"
-                    BorderThickness="1">
-                <StackPanel HorizontalAlignment="Center">
+            <Button Content="{DynamicResource CreateNewOutfit}" 
+                    Click="CreateOutfit_Click" 
+                    Width="220" 
+                    Padding="10" 
+                    Background="#4CAF50" 
+                    Foreground="White" 
+                    FontWeight="Bold"/>
 
-                    <TextBlock Text="🖼️" 
-                               FontSize="48" 
-                               HorizontalAlignment="Center"
-                               Margin="0,0,0,15"/>
+            <Border Background="White" CornerRadius="10" Margin="10" Padding="15">
+                <ListBox x:Name="OutfitsList" Height="400">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="#FFF0F5" 
+                                    Margin="5" 
+                                    Padding="10" 
+                                    BorderBrush="#FF69B4" 
+                                    BorderThickness="1"
+                                    CornerRadius="8">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="{DynamicResource OutfitsComingSoon}" 
-                               FontSize="16" 
-                               FontWeight="Bold" 
-                               Foreground="#FF1493" 
-                               HorizontalAlignment="Center" 
-                               TextWrapping="Wrap"
-                               Margin="10,0,10,20"/>
-    
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}" 
+                                                   FontSize="18" 
+                                                   FontWeight="Bold" 
+                                                   Foreground="#FF1493"/>
+                                        <TextBlock Text="{Binding Description}" 
+                                                   FontSize="12" 
+                                                   Foreground="Gray"
+                                                   TextWrapping="Wrap"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{DynamicResource Created}" 
+                                                       FontSize="10" 
+                                                       Foreground="Gray"/>
+                                            <TextBlock Text="{Binding CreatedDate, StringFormat=dd.MM.yyyy HH:mm}" 
+                                                       FontSize="10" 
+                                                       Foreground="Gray"
+                                                       Margin="5,0,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{DynamicResource NumberOfItems}" 
+                                                       FontSize="11" 
+                                                       Foreground="#FF69B4"
+                                                       FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding ItemIds.Count}" 
+                                                       FontSize="11" 
+                                                       Foreground="#FF69B4"
+                                                       FontWeight="Bold"
+                                                       Margin="5,0,0,0"/>
+                                        </StackPanel>
+                                    </StackPanel>
 
-                    <TextBlock Text="буде доступна найближчим часом!" 
-                               FontSize="14" 
-                               Foreground="Gray"
-                               HorizontalAlignment="Center"
-                               Margin="0,0,0,20"/>
-
-                    <Button Content="{DynamicResource Add}" 
-                            Click="CreateOutfit_Click" 
-                            Width="200" 
-                            Margin="10" 
-                            Padding="10" 
-                            Background="#FF69B4" 
-                            Foreground="White" 
-                            FontWeight="Bold"
-                            Cursor="Hand"/>
-
-                </StackPanel>
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Button Content="👁️" 
+                                                Click="ViewOutfit_Click" 
+                                                Width="40" 
+                                                Height="40" 
+                                                Margin="2" 
+                                                Background="#2196F3" 
+                                                Foreground="White"
+                                                FontSize="16"
+                                                ToolTip="{DynamicResource View}"/>
+                                        <Button Content="🗑️" 
+                                                Click="DeleteOutfit_Click" 
+                                                Width="40" 
+                                                Height="40" 
+                                                Margin="2" 
+                                                Background="#DC143C" 
+                                                Foreground="White"
+                                                FontSize="16"
+                                                ToolTip="{DynamicResource Delete}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Border>
+
+            <TextBlock Text="{DynamicResource OutfitTip}" 
+                       FontSize="11" 
+                       Foreground="Gray" 
+                       HorizontalAlignment="Center" 
+                       Margin="10"/>
 
         </StackPanel>
     </ScrollViewer>

@@ -1,74 +1,62 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using MyWardrobe.Models;
-using Newtonsoft.Json;
+using MyWardrobe.Services;
 
 namespace MyWardrobe.Views
 {
     /// <summary>
-    /// Головна сторінка додатку, яка відображає всю колекцію одягу та дозволяє виконувати пошук за назвою.
+    /// Головна сторінка програми, яка відображає всі речі гардеробу та дозволяє виконувати пошук за назвою.
     /// </summary>
     public partial class HomePage : Page
     {
+        private DataService _dataService;
+
         /// <summary>
-        /// Колекція всіх невидалених речей (використовується для відображення та пошуку).
+        /// Колекція всіх невидалених речей для відображення на головній сторінці.
         /// </summary>
         public ObservableCollection<Clothing> clothes;
 
         /// <summary>
-        /// Ініціалізує компоненти сторінки, завантажує дані з JSON-файлу та оновлює лічильник речей.
+        /// Ініціалізує новий екземпляр головної сторінки.
         /// </summary>
-        public HomePage()
+        public HomePage(DataService dataService)
         {
             InitializeComponent();
+            _dataService = dataService;
             LoadData();
             ItemsList.ItemsSource = clothes;
             UpdateCountText();
         }
 
         /// <summary>
-        /// Завантажує з файлу clothes.json усі невидалені речі (IsDeleted == false).
-        /// У разі помилки показує повідомлення та створює порожню колекцію.
+        /// Завантажує з файлу даних усі невидалені речі (IsDeleted == false).
+        /// У разі відсутності даних створює порожню колекцію.
         /// </summary>
         private void LoadData()
         {
-            try
+            if (_dataService != null)
             {
-                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "clothes.json");
-
-                if (File.Exists(path))
+                var allItems = _dataService.LoadClothes();
+                clothes = new ObservableCollection<Clothing>();
+                foreach (var item in allItems)
                 {
-                    string json = File.ReadAllText(path);
-                    var items = JsonConvert.DeserializeObject<ObservableCollection<Clothing>>(json);
-
-                    clothes = new ObservableCollection<Clothing>();
-
-                    foreach (var item in items)
+                    if (!item.IsDeleted)
                     {
-                        if (!item.IsDeleted)
-                        {
-                            clothes.Add(item);
-                        }
+                        clothes.Add(item);
                     }
                 }
-                else
-                {
-                    clothes = new ObservableCollection<Clothing>();
-                    MessageBox.Show("Файл з даними не знайдено!");
-                }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Помилка завантаження: {ex.Message}");
                 clothes = new ObservableCollection<Clothing>();
             }
         }
 
         /// <summary>
-        /// Оновлює текстовий блок CountText, відображаючи загальну кількість речей у колекції.
+        /// Оновлює текстовий блок із загальною кількістю речей у гардеробі.
         /// </summary>
         private void UpdateCountText()
         {
@@ -79,8 +67,8 @@ namespace MyWardrobe.Views
         }
 
         /// <summary>
-        /// Виконує пошук речей за назвою (нечутливий до регістру).
-        /// Результати відображаються в ResultList. Якщо нічого не знайдено – виводить відповідне повідомлення.
+        /// Виконує пошук речей за назвою (без урахування регістру символів).
+        /// Результати пошуку відображаються в окремому списку.
         /// </summary>
         private void Search_Click(object sender, RoutedEventArgs e)
         {
@@ -91,7 +79,6 @@ namespace MyWardrobe.Views
             }
 
             ObservableCollection<Clothing> result = new ObservableCollection<Clothing>();
-
             foreach (var item in clothes)
             {
                 if (item.Name.ToLower().Contains(SearchBox.Text.ToLower()))
@@ -101,7 +88,6 @@ namespace MyWardrobe.Views
             }
 
             ResultList.ItemsSource = result;
-
             if (result.Count == 0)
             {
                 CustomMessageBox.ShowInfo($"Нічого не знайдено за запитом \"{SearchBox.Text}\"");

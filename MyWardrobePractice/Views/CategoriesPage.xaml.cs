@@ -2,98 +2,100 @@
 using System.Windows;
 using System.Windows.Controls;
 using MyWardrobe.Models;
+using MyWardrobe.Services;
 
 namespace MyWardrobe.Views
 {
     /// <summary>
-    /// Сторінка для відображення та фільтрації одягу за категоріями (верх, низ, взуття, плаття).
-    /// Отримує колекцію одягу з головного вікна та фільтрує її відповідно до вибору користувача.
+    /// Сторінка "Категорії", яка відображає одяг, згрупований за типами (верх, низ, взуття, плаття).
+    /// Дозволяє користувачеві фільтрувати речі за вибраною категорією.
     /// </summary>
     public partial class CategoriesPage : Page
     {
-        private ObservableCollection<Clothing> allClothes;
+        private DataService _dataService;
 
         /// <summary>
-        /// Ініціалізує компоненти сторінки, зберігає посилання на колекцію одягу та показує всі речі.
+        /// Ініціалізує новий екземпляр сторінки категорій.
         /// </summary>
-        /// <param name="clothes">Колекція всіх речей (передається з MainWindow).</param>
-        public CategoriesPage(ObservableCollection<Clothing> clothes)
+        public CategoriesPage(DataService dataService)
         {
             InitializeComponent();
-            allClothes = clothes; 
+            _dataService = dataService;
             ShowAll();
         }
 
         /// <summary>
-        /// Обробляє натискання кнопок категорій та викликає відповідний метод фільтрації.
+        /// Обробляє натискання кнопки категорії. Визначає вибрану категорію та викликає відповідний метод фільтрації.
         /// </summary>
         private void Category_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             string category = button.Content.ToString();
 
-            if (category == "Всі")
+            if (category.Contains("Всі") || category.Contains("All"))
             {
                 ShowAll();
             }
-            else if (category.Contains("Верх"))
+            else if (category.Contains("Верх") || category.Contains("Top"))
             {
                 ShowByType("верх");
             }
-            else if (category.Contains("Низ"))
+            else if (category.Contains("Низ") || category.Contains("Bottom"))
             {
                 ShowByType("низ");
             }
-            else if (category.Contains("Взуття"))
+            else if (category.Contains("Взуття") || category.Contains("Shoes"))
             {
                 ShowByType("взуття");
             }
-            else if (category.Contains("Плаття"))
+            else if (category.Contains("Плаття") || category.Contains("Dress"))
             {
                 ShowByType("плаття");
             }
         }
 
         /// <summary>
-        /// Показує всі речі, які не видалені (IsDeleted == false).
+        /// Відображає всі невидалені речі з гардеробу незалежно від їх типу.
         /// </summary>
         private void ShowAll()
         {
-            ObservableCollection<Clothing> result = new ObservableCollection<Clothing>();
-
-            if (allClothes != null)
+            if (_dataService != null)
             {
-                foreach (var item in allClothes)
+                var freshData = _dataService.LoadClothes();
+                ObservableCollection<Clothing> result = new ObservableCollection<Clothing>();
+
+                foreach (var item in freshData)
                 {
                     if (!item.IsDeleted)
                     {
                         result.Add(item);
                     }
                 }
-            }
 
-            ItemsList.ItemsSource = result;
+                ItemsList.ItemsSource = result;
+            }
         }
 
         /// <summary>
-        /// Фільтрує речі за вказаним типом (верх, низ, взуття, плаття) та показує тільки не видалені.
+        /// Відображає лише речі вказаного типу, які не видалені.
         /// </summary>
         private void ShowByType(string type)
         {
-            ObservableCollection<Clothing> result = new ObservableCollection<Clothing>();
-
-            if (allClothes != null)
+            if (_dataService != null)
             {
-                foreach (var item in allClothes)
+                var freshData = _dataService.LoadClothes();
+                ObservableCollection<Clothing> result = new ObservableCollection<Clothing>();
+
+                foreach (var item in freshData)
                 {
                     if (item.Type == type && !item.IsDeleted)
                     {
                         result.Add(item);
                     }
                 }
-            }
 
-            ItemsList.ItemsSource = result;
+                ItemsList.ItemsSource = result;
+            }
         }
     }
 }

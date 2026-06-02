@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.IO;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using MyWardrobe.Models;
-using Newtonsoft.Json;
+using MyWardrobe.Services;
 
 namespace MyWardrobe.Views
 {
@@ -14,68 +12,56 @@ namespace MyWardrobe.Views
     /// </summary>
     public partial class TrashPage : Page
     {
-        private ObservableCollection<Clothing> allClothes;
-        private string dataPath;
+        private DataService _dataService;
+        private ObservableCollection<Clothing> _allClothes;
 
         /// <summary>
-        /// Ініціалізує компоненти сторінки, встановлює шлях до файлу даних та завантажує список видалених речей.
+        /// Ініціалізує новий екземпляр сторінки корзини.
         /// </summary>
-        public TrashPage()
+        public TrashPage(DataService dataService)
         {
             InitializeComponent();
-            dataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "clothes.json");
+            _dataService = dataService;
             LoadData();
         }
 
         /// <summary>
-        /// Завантажує з файлу clothes.json усі речі, у яких IsDeleted == true, та відображає їх у списку.
+        /// Завантажує з файлу даних усі речі, які мають позначку IsDeleted = true.
+        /// Відображає їх у списку корзини.
         /// </summary>
         private void LoadData()
         {
-            try
+            if (_dataService != null)
             {
-                if (File.Exists(dataPath))
+                _allClothes = _dataService.LoadClothes();
+                ObservableCollection<Clothing> deleted = new ObservableCollection<Clothing>();
+
+                foreach (var item in _allClothes)
                 {
-                    string json = File.ReadAllText(dataPath);
-                    allClothes = JsonConvert.DeserializeObject<ObservableCollection<Clothing>>(json);
-
-                    ObservableCollection<Clothing> deleted = new ObservableCollection<Clothing>();
-
-                    foreach (var item in allClothes)
+                    if (item.IsDeleted == true)
                     {
-                        if (item.IsDeleted == true)
-                        {
-                            deleted.Add(item);
-                        }
+                        deleted.Add(item);
                     }
-
-                    TrashList.ItemsSource = deleted;
                 }
-            }
-            catch (Exception ex)
-            {
-                CustomMessageBox.ShowError($"Помилка: {ex.Message}");
+
+                TrashList.ItemsSource = deleted;
             }
         }
 
         /// <summary>
-        /// Зберігає поточний стан колекції allClothes у файл clothes.json.
+        /// Зберігає поточний стан усіх речей у файл даних.
         /// </summary>
         private void SaveData()
         {
-            try
+            if (_dataService != null && _allClothes != null)
             {
-                string json = JsonConvert.SerializeObject(allClothes, Formatting.Indented);
-                File.WriteAllText(dataPath, json);
-            }
-            catch (Exception ex)
-            {
-                CustomMessageBox.ShowError($"Помилка збереження: {ex.Message}");
+                _dataService.SaveClothes(_allClothes);
             }
         }
 
         /// <summary>
-        /// Відновлює вибрану річ: змінює IsDeleted на false, зберігає зміни та оновлює список корзини.
+        /// Відновлює вибрану річ з корзини (змінює IsDeleted на false).
+        /// Після відновлення оновлює список корзини.
         /// </summary>
         private void Restore_Click(object sender, RoutedEventArgs e)
         {
@@ -104,7 +90,7 @@ namespace MyWardrobe.Views
             {
                 if (CustomMessageBox.Show($"Видалити '{item.Name}' назавжди?", "Підтвердження") == true)
                 {
-                    allClothes.Remove(item);
+                    _allClothes.Remove(item);
                     SaveData();
                     LoadData();
                     CustomMessageBox.ShowInfo($"'{item.Name}' видалено назавжди!");

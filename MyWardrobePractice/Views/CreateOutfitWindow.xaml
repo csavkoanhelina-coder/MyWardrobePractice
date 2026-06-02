@@ -1,0 +1,100 @@
+﻿<Window x:Class="MyWardrobe.Views.CreateOutfitWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource CreateOutfitTitle}" 
+        Height="700" 
+        Width="900"
+        WindowStartupLocation="CenterOwner">
+
+    <Window.Background>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFB6C1" Offset="0"/>
+            <GradientStop Color="#FF69B4" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Background>
+
+    <Border Background="White" CornerRadius="15" Margin="15" Padding="20">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,10">
+                <TextBlock Text="{DynamicResource NewOutfit}" 
+                           FontSize="24" 
+                           FontWeight="Bold" 
+                           Foreground="#FF1493" 
+                           Margin="0,0,0,15"/>
+
+                <TextBlock Text="{DynamicResource OutfitName}" FontSize="14" FontWeight="Bold" Margin="0,5,0,2"/>
+                <TextBox x:Name="NameBox" Padding="8" FontSize="14" Background="#FFF0F5" BorderBrush="#FFB6C1" Margin="0,0,0,10"/>
+
+                <TextBlock Text="{DynamicResource OutfitDescription}" FontSize="14" FontWeight="Bold" Margin="0,5,0,2"/>
+                <TextBox x:Name="DescriptionBox" Padding="8" FontSize="14" Background="#FFF0F5" BorderBrush="#FFB6C1" Height="80" TextWrapping="Wrap" Margin="0,0,0,10"/>
+
+                <TextBlock Text="{DynamicResource SelectedItems}" FontSize="14" FontWeight="Bold" Margin="0,10,0,5" Foreground="#FF1493"/>
+                <ListBox x:Name="SelectedItemsList" Height="200" Background="#FFF0F5" BorderBrush="#FFB6C1">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="#FFE4E1" Margin="2" Padding="5">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Width="120"/>
+                                    <TextBlock Text="{Binding Type}" FontSize="11" Foreground="Gray" Width="80"/>
+                                    <Button Content="❌" Click="RemoveSelectedItem_Click" Width="25" Height="25" Background="#DC143C" Foreground="White" FontSize="10" Margin="5,0,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+
+            <StackPanel Grid.Row="0" Grid.Column="1" Margin="10,0,0,10">
+                <TextBlock Text="{DynamicResource SelectItems}" FontSize="18" FontWeight="Bold" Foreground="#FF1493" Margin="0,0,0,10"/>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <TextBlock Text="{DynamicResource Filter}" FontSize="12" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <ComboBox x:Name="FilterBox" SelectionChanged="FilterBox_SelectionChanged" Width="100" Background="#FFF0F5">
+                        <ComboBoxItem Content="{DynamicResource All}"/>
+                        <ComboBoxItem Content="Верх"/>
+                        <ComboBoxItem Content="Низ"/>
+                        <ComboBoxItem Content="Плаття"/>
+                        <ComboBoxItem Content="Взуття"/>
+                    </ComboBox>
+                </StackPanel>
+
+                <ListBox x:Name="AvailableItemsList" Height="350" Background="#FFF0F5" BorderBrush="#FFB6C1" SelectionMode="Single">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="#FFE4E1" Margin="2" Padding="5" Cursor="Hand" MouseLeftButtonDown="Item_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding ImagePath}" Width="40" Height="40" Margin="0,0,10,0"/>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Type}" FontSize="11" Foreground="Gray" Width="60"/>
+                                            <TextBlock Text="{Binding Color}" FontSize="11" Foreground="Gray" Width="60"/>
+                                            <TextBlock Text="{Binding Season}" FontSize="11" Foreground="Gray"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                <Button Content="{DynamicResource Create}" Click="Create_Click" Background="#4CAF50" Foreground="White" FontSize="14" FontWeight="Bold" Padding="20,10" Margin="5" Width="200"/>
+                <Button Content="{DynamicResource Cancel}" Click="Cancel_Click" Background="#DC143C" Foreground="White" FontSize="14" FontWeight="Bold" Padding="20,10" Margin="5" Width="200"/>
+            </StackPanel>
+
+        </Grid>
+    </Border>
+</Window>

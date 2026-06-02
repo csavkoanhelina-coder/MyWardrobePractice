@@ -1,80 +1,60 @@
 ﻿using MyWardrobe.Models;
-using Newtonsoft.Json;
+using MyWardrobe.Services;
 using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace MyWardrobe.Views
 {
     /// <summary>
-    /// Сторінка для керування взуттям. 
-    /// Відображає список взуття, дозволяє додавати в улюблене та видаляти в корзину.
+    /// Сторінка "Взуття", яка відображає всі речі типу "взуття" в гардеробі.
+    /// Дозволяє додавати, редагувати, видаляти взуття та відмічати його як улюблене.
     /// </summary>
     public partial class ShoesPage : Page
     {
         private ObservableCollection<Clothing> allClothes = new ObservableCollection<Clothing>();
-        private string dataPath;
+        private DataService _dataService;
 
         /// <summary>
-        /// Ініціалізує компоненти сторінки, встановлює шлях до файлу даних та завантажує список взуття.
+        /// Ініціалізує новий екземпляр сторінки взуття.
         /// </summary>
-        public ShoesPage()
+        public ShoesPage(DataService dataService)
         {
             InitializeComponent();
-            dataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "clothes.json");
+            _dataService = dataService;
             LoadData();
             ShoesList.ItemsSource = allClothes;
         }
 
         /// <summary>
-        /// Завантажує з файлу clothes.json лише невидалене взуття (Type == "взуття" та IsDeleted == false).
+        /// Завантажує всі невидалені речі типу "взуття" з файлу даних.
         /// </summary>
         public void LoadData()
         {
-            try
+            if (_dataService != null)
             {
-                if (File.Exists(dataPath))
+                var items = _dataService.LoadClothes();
+                allClothes.Clear();
+                foreach (var item in items)
                 {
-                    string json = File.ReadAllText(dataPath);
-                    var items = JsonConvert.DeserializeObject<ObservableCollection<Clothing>>(json);
-
-                    allClothes.Clear();
-
-                    foreach (var item in items)
+                    if (item.Type == "взуття" && item.IsDeleted == false)
                     {
-                        if (item.Type == "взуття" && item.IsDeleted == false)
-                        {
-                            allClothes.Add(item);
-                        }
+                        allClothes.Add(item);
                     }
-
-                    ShoesList.Items.Refresh();
                 }
-            }
-            catch (Exception ex)
-            {
-                CustomMessageBox.ShowError($"Помилка завантаження: {ex.Message}");
+                ShoesList.Items.Refresh();
             }
         }
 
         /// <summary>
-        /// Зберігає поточний стан колекції взуття у файл clothes.json.
-        /// Оновлює статуси IsFavorite та IsDeleted для існуючих записів, додає нове взуття.
+        /// Зберігає поточний стан взуття у файл даних, оновлюючи статуси IsFavorite та IsDeleted.
         /// </summary>
         private void SaveData()
         {
-            try
+            if (_dataService != null)
             {
-                ObservableCollection<Clothing> allItems = new ObservableCollection<Clothing>();
-
-                if (File.Exists(dataPath))
-                {
-                    string json = File.ReadAllText(dataPath);
-                    allItems = JsonConvert.DeserializeObject<ObservableCollection<Clothing>>(json);
-                }
-
+                var allItems = _dataService.LoadClothes();
                 foreach (var currentItem in allClothes)
                 {
                     bool found = false;
@@ -93,32 +73,52 @@ namespace MyWardrobe.Views
                         allItems.Add(currentItem);
                     }
                 }
-
-                string newJson = JsonConvert.SerializeObject(allItems, Formatting.Indented);
-                File.WriteAllText(dataPath, newJson);
-            }
-            catch (Exception ex)
-            {
-                CustomMessageBox.ShowError($"Помилка збереження: {ex.Message}");
+                _dataService.SaveClothes(allItems);
             }
         }
 
         /// <summary>
-        /// Обробляє натискання кнопки "❤️": змінює статус IsFavorite, зберігає дані та оновлює список.
+        /// Відкриває вікно редагування вибраного взуття та зберігає зміни.
         /// </summary>
-        private void Favorite_Click(object sender, RoutedEventArgs e)
+        private void Edit_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
             Clothing item = button?.DataContext as Clothing;
 
             if (item != null)
             {
+                EditClothesWindow window = new EditClothesWindow(item);
+                if (window.ShowDialog() == true && window.EditedItem != null)
+                {
+                    var allItems = _dataService.LoadClothes();
+                    for (int i = 0; i < allItems.Count; i++)
+                    {
+                        if (allItems[i].Id == item.Id)
+                        {
+                            allItems[i] = window.EditedItem;
+                            break;
+                        }
+                    }
+                    _dataService.SaveClothes(allItems);
+
+                    LoadData();
+                    CustomMessageBox.ShowSuccess($"'{window.EditedItem.Name}' відредаговано!");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Змінює статус "улюблене" для вибраного взуття та зберігає зміни.
+        /// </summary>
+        private void Favorite_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            Clothing item = button?.DataContext as Clothing;
+            if (item != null)
+            {
                 item.IsFavorite = !item.IsFavorite;
-
                 SaveData();
-
                 ShoesList.Items.Refresh();
-
                 if (item.IsFavorite)
                     CustomMessageBox.ShowSuccess($"'{item.Name}' додано в улюблене!");
                 else
@@ -127,24 +127,19 @@ namespace MyWardrobe.Views
         }
 
         /// <summary>
-        /// Обробляє натискання кнопки "🗑️": після підтвердження встановлює IsDeleted = true,
-        /// зберігає зміни та оновлює список (взуття переміщується в корзину).
+        /// Позначає вибране взуття як видалене (переміщує до корзини) після підтвердження користувача.
         /// </summary>
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
             Clothing item = button?.DataContext as Clothing;
-
             if (item != null)
             {
                 if (CustomMessageBox.Show($"Видалити '{item.Name}'?", "Підтвердження") == true)
                 {
                     item.IsDeleted = true;
-
                     SaveData();
-
                     LoadData();
-
                     CustomMessageBox.ShowTrash($"'{item.Name}' переміщено в корзину!");
                 }
             }

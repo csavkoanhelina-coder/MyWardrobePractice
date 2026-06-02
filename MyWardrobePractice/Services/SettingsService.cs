@@ -14,7 +14,6 @@ namespace MyWardrobe.Services
         private static string SettingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json");
 
         /// <summary>Зберігає вибрану тему оформлення.</summary>
-        /// <param name="theme">Назва теми ("Light" або "Dark").</param>
         public static void SaveTheme(string theme)
         {
             var settings = LoadSettings();

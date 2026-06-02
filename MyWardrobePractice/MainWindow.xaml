@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:MyWardrobe.Views"
         Title="Мій гардероб" 
-        Height="600" 
+        Height="650" 
         Width="1000">
 
     <Grid>
@@ -21,6 +21,7 @@
                 <Button Content="{DynamicResource Shoes}" Click="Shoes_Click" Background="{DynamicResource ButtonBrush}" Margin="5" Height="60" Foreground="White"/>
                 <Button Content="{DynamicResource Favorites}" Click="Favorites_Click" Background="{DynamicResource ButtonBrush}" Margin="5" Height="60" Foreground="White"/>
                 <Button Content="{DynamicResource Trash}" Click="Trash_Click" Background="{DynamicResource ButtonBrush}" Margin="5" Height="60" Foreground="White"/>
+                <Button Content="{DynamicResource Statistics}" Click="Statistics_Click" Background="{DynamicResource ButtonBrush}" Margin="5" Height="60" Foreground="White"/>
                 <Button Content="{DynamicResource Settings}" Click="Settings_Click" Background="{DynamicResource ButtonBrush}" Margin="5" Height="60" Foreground="White"/>
             </StackPanel>
         </Grid>
